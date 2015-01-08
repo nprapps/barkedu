@@ -17,13 +17,13 @@ var onDocumentLoad = function(e) {
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);
 
-    // configure ZeroClipboard on share panel
+    /* configure ZeroClipboard on share panel
     ZeroClipboard.config({ swfPath: 'js/lib/ZeroClipboard.swf' });
     var clippy = new ZeroClipboard($(".clippy"));
 
     clippy.on('ready', function(readyEvent) {
         clippy.on('aftercopy', onClippyCopy);
-    });
+    });*/
 
     renderExampleTemplate();
     getCommentCount(showCommentCount);
@@ -81,11 +81,36 @@ var onShareModalHidden = function(e) {
 
 /*
  * Text copied to clipboard.
- */
+ 
 var onClippyCopy = function(e) {
     alert('Copied to your clipboard!');
 
     ANALYTICS.copySummary();
 }
+*/
+
+
+$(document).ready(function() {
+    
+    //audio
+
+	$('#moodmusic').mediaelementplayer({
+        audioWidth: '100%',
+        audioHeight: 50,
+        features: ['playpause','progress'],
+            
+    });
+    
+    var audiolab = $("#moodmusic")[0];
+    
+    $(".btn-go").click(function() {
+        audiolab.play();
+      
+    });
+
+});
+
+
+
 
 $(onDocumentLoad);

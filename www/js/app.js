@@ -330,7 +330,7 @@ var checkForAudio = function(slideAnchor) {
         var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
         var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
 
-        // check
+        // check for new narrative file
         if (rowAnchor === slideAnchor && narrativeFile !== null) {
             $narrativePlayer.jPlayer('setMedia', {
                 mp3: narrativeString
@@ -340,11 +340,13 @@ var checkForAudio = function(slideAnchor) {
                 narrativePlaying = true;
             }
         }
-        if (COPY.content[i][0] === slideAnchor && COPY.content[i][11] !== null) {
+
+        // check for new ambient file
+        if (rowAnchor === slideAnchor && ambientFile !== null) {
             // if we're not already playing this file
             if (ambientString !== $ambientPlayer.data().jPlayer.status.src) {
                 $ambientPlayer.jPlayer('setMedia', {
-                    mp3: APP_CONFIG.S3_BASE_URL + '/assets/' + COPY.content[i][11]
+                    mp3: ambientString
                 });
                 $ambientPlayer.jPlayer('play');
             }

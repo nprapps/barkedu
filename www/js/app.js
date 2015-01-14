@@ -20,6 +20,8 @@ var slideStartTime = new Date();
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
+var narrativePlaying = false;
+var ambientPlaying = false;
 
 
 var resize = function() {
@@ -220,7 +222,10 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
-    $narrativePlayer.jPlayer('stop');
+    if (narrativePlaying) {
+        $narrativePlayer.jPlayer('stop');
+        narrativePlaying = false;
+    }
 
     var timeOnSlide = Math.abs(new Date() - slideStartTime);
     ANALYTICS.exitSlide(slideIndex.toString(), timeOnSlide, lastSlideExitEvent);
@@ -307,7 +312,7 @@ var setUpNarrativeAudio = function() {
 var setUpAmbientAudio = function() {
     $ambientPlayer.jPlayer({
         supplied: 'mp3',
-        loop: false,
+        loop: true,
         swfPath: APP_CONFIG.S3_BASE_URL + '/js/lib/jquery.jplayer.swf'
     });
 }
@@ -318,17 +323,31 @@ var onNarrativeTimeUpdate = function() {
 
 var checkForAudio = function(slideAnchor) {
     for (var i = 0; i < COPY.content.length; i++) {
-        if (COPY.content[i][0] === slideAnchor && COPY.content[i][9] !== null) {
+        var rowAnchor = COPY.content[i][0];
+        var narrativeFile = COPY.content[i][9];
+        var ambientFile = COPY.content[i][11];
+
+        var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
+        var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
+
+        // check
+        if (rowAnchor === slideAnchor && narrativeFile !== null) {
             $narrativePlayer.jPlayer('setMedia', {
-                mp3: APP_CONFIG.S3_BASE_URL + '/assets/' + COPY.content[i][9]
+                mp3: narrativeString
             });
-            $narrativePlayer.jPlayer('play');
+            if (!narrativePlaying) {
+                $narrativePlayer.jPlayer('play');
+                narrativePlaying = true;
+            }
         }
         if (COPY.content[i][0] === slideAnchor && COPY.content[i][11] !== null) {
-            $ambientPlayer.jPlayer('setMedia', {
-                mp3: APP_CONFIG.S3_BASE_URL + '/assets/' + COPY.content[i][11]
-            });
-            $ambientPlayer.jPlayer('play');
+            // if we're not already playing this file
+            if (ambientString !== $ambientPlayer.data().jPlayer.status.src) {
+                $ambientPlayer.jPlayer('setMedia', {
+                    mp3: APP_CONFIG.S3_BASE_URL + '/assets/' + COPY.content[i][11]
+                });
+                $ambientPlayer.jPlayer('play');
+            }
         }
     }
 }

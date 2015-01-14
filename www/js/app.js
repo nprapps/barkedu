@@ -325,6 +325,7 @@ var checkForAudio = function(slideAnchor) {
     for (var i = 0; i < COPY.content.length; i++) {
         var rowAnchor = COPY.content[i][0];
         var narrativeFile = COPY.content[i][9];
+        var narrativeSubtitles = COPY.content[i][10];
         var ambientFile = COPY.content[i][11];
 
         var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
@@ -336,8 +337,12 @@ var checkForAudio = function(slideAnchor) {
                 mp3: narrativeString
             });
             if (!narrativePlaying) {
-                $narrativePlayer.jPlayer('play');
-                narrativePlaying = true;
+                setTimeout(function() {
+                    $narrativePlayer.jPlayer('play');
+                    $('#slide-' + slideAnchor).find('.subtitle').text(narrativeSubtitles);
+                    narrativePlaying = true;
+                }, 2000);
+
             }
         }
 

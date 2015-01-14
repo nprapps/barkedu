@@ -1,32 +1,22 @@
 {% extends '_base.html' %}
 
 {% block header_content %}
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>{{ COPY.content.project_name|smarty }}</h1>
-                <h2>{{ COPY.content.lorem_ipsum|smarty }}</h2>
-            </div>
-        </div>
-    </div>
-</header>
 {% endblock %}
 
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="kante">Kante Manfila — Diniya</h1>
-            
-            <div class="audio-controls">
-                <audio id="moodmusic">
-                    <source src="assets/kante-manfila_CohCoco.mp3" type="audio/mp3">
-                    <!--<source src="assets/" type="audio/ogg">-->
-                </audio>
-            </div> <!--/audio controls -->
-        </div>
-    </div>
+
+<div class="section">
+    {% for row in COPY.content %}
+        {% include "slides/%s.html" % (row.template) ignore missing %}
+    {% endfor %}
 </div>
+<div class="primary-navigation" style="opacity:1;">
+    <div class="controlArrow prev"></div>
+    <div class="controlArrow next"></div>
+</div>
+
+{% endblock %}
+
+{% block wide_content %}
 {% endblock %}

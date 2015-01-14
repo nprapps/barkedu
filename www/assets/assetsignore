@@ -1,3 +1,2 @@
 .DS_Store
-.placeholder
-assetsignore
+*/.DS_Store

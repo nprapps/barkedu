@@ -2,13 +2,10 @@
 <html lang="en">
 
 <head>
-    <title>{{ COPY.content.project_name }}</title>
+    <title>{{ COPY.post_metadata.title }}</title>
 
     <!-- META TAGS -->
     {% include '_meta.html' %}
-
-    <!-- CHARTBEAT -->
-    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
 
     <!-- CSS -->
     {{ CSS.push('less/app.less') }}
@@ -28,41 +25,25 @@
     {% block header_content %}
     {% endblock header_content %}
 
-    
     {% block content %}
     {% endblock content %}
-               
     {% block wide_content %}
     {% endblock wide_content %}
 
-
-    
-
     {% endblock outer_content %}
 
-    {% block comments %}
-        {% include '_share_modal.html' %}
-    {% endblock %}
-
-    {{ JS.push('js/lib/jquery.js') }}
-    {{ JS.push('js/lib/underscore.js') }}
     {{ JS.push('js/lib/modernizr.js') }}
-    {{ JS.push('js/lib/bootstrap.js') }}
-    {{ JS.push('js/lib/moment.js') }}
+    {{ JS.push('js/lib/jquery.js') }}
+    {{ JS.push('js/lib/jquery.fullpage.js') }}
     {{ JS.push('js/lib/webfont.js') }}
-    {{ JS.push('js/lib/popcorn-complete.min.js') }}
-    {{ JS.push('js/lib/mediaelement-and-player.min.js') }}
-    {{ JS.push('js/pop-events.js') }}
+    {{ JS.push('js/lib/ZeroClipboard.js') }}
     {{ JS.push('js/app_config.js') }}
     {{ JS.push('js/copy.js') }}
     {{ JS.push('js/console.js') }}
-    {{ JS.push('js/ads.js') }}
     {{ JS.push('js/fonts.js') }}
-    {{ JS.push('js/templates.js') }}
-    {{ JS.push('js/comments.js') }}
-    {{ JS.push('js/app.js') }}
     {% block extra_foot_js %}{% endblock extra_foot_js %}
     {{ JS.push('js/analytics.js') }}
+    {{ JS.push('js/app.js') }}
     {{ JS.render('js/app-footer.min.js') }}
 
     {% block extra_foot %}

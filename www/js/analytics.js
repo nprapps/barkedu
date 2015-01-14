@@ -12,7 +12,7 @@ var ANALYTICS = (function () {
         _gaq.push(['_setAccount', APP_CONFIG.GOOGLE_ANALYTICS.ACCOUNT_ID]);
         _gaq.push(['_setDomainName', APP_CONFIG.GOOGLE_ANALYTICS.DOMAIN]);
         //_gaq.push(['_setCustomVar', 1, 'BC', '', 3]);
-        _gaq.push(['_setCustomVar', 2, 'Topics', APP_CONFIG.GOOGLE_ANALYTICS.TOPICS, 3]);
+        _gaq.push(['_setCustomVar', 2, 'Topics', APP_CONFIG.GOOGLE_ANALYTICS_TOPICS, 3]);
         //_gaq.push(['_setCustomVar', 3, 'Program ID', '', 3]);
         //_gaq.push(['_setCustomVar', 3, 'Localization', '', 1]);
         _gaq.push(['_setCustomVar', 4, 'OrgID', '1', 3]);
@@ -128,7 +128,7 @@ var ANALYTICS = (function () {
      * Event tracking.
      */
     var trackEvent = function(eventName, label, value, custom1, custom2) {
-        var args = ['_trackEvent', APP_CONFIG.PROJECT_SLUG];
+        var args = ['_trackEvent', APP_CONFIG.DEPLOY_SLUG];
 
         args.push(eventName);
 
@@ -223,8 +223,12 @@ var ANALYTICS = (function () {
 
     // SLIDES
 
-    var exitSlide = function(slide_index, time_on_slide) {
-        trackEvent('slide-exit', slide_index, time_on_slide);
+    var exitSlide = function(slide_index, time_on_slide, last_slide_exit_event) {
+        trackEvent('slide-exit', slide_index, time_on_slide, last_slide_exit_event);
+    }
+
+    var firstRightArrowClick = function(test, time_on_slide) {
+        trackEvent('first-right-arrow-clicked', test, time_on_slide);
     }
 
     return {
@@ -244,7 +248,8 @@ var ANALYTICS = (function () {
         'completeFiftyPercent': completeFiftyPercent,
         'completeSeventyFivePercent': completeSeventyFivePercent,
         'completeOneHundredPercent': completeOneHundredPercent,
-        'exitSlide': exitSlide
+        'exitSlide': exitSlide,
+        'firstRightArrowClick': firstRightArrowClick
     };
 }());
 

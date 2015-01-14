@@ -128,7 +128,7 @@ var ANALYTICS = (function () {
      * Event tracking.
      */
     var trackEvent = function(eventName, label, value, custom1, custom2) {
-        var args = ['_trackEvent', APP_CONFIG.DEPLOY_SLUG];
+        var args = ['_trackEvent', APP_CONFIG.PROJECT_SLUG];
 
         args.push(eventName);
 

@@ -6,7 +6,9 @@ var $slides;
 var $arrows;
 var $nextArrow;
 var $startCardButton;
-var isTouch = Modernizr.Touch;
+var $narrativePlayer;
+var $ambientPlayer;
+var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
 var aspectHeight = 9;
@@ -72,6 +74,7 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     setSlidesForLazyLoading(slideIndex);
     showNavigation();
     slideStartTime = Date.now();
+    checkForAudio(slideAnchor);
 
     // Completion tracking
     how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
@@ -217,6 +220,8 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
+    $narrativePlayer.jPlayer('stop');
+
     var timeOnSlide = Math.abs(new Date() - slideStartTime);
     ANALYTICS.exitSlide(slideIndex.toString(), timeOnSlide, lastSlideExitEvent);
 }
@@ -290,6 +295,44 @@ var onClippyCopy = function(e) {
     ANALYTICS.copySummary();
 }
 
+var setUpNarrativeAudio = function() {
+    $narrativePlayer.jPlayer({
+        supplied: 'mp3',
+        loop: false,
+        timeupdate: onNarrativeTimeUpdate,
+        swfPath: APP_CONFIG.S3_BASE_URL + '/js/lib/jquery.jplayer.swf'
+    });
+}
+
+var setUpAmbientAudio = function() {
+    $ambientPlayer.jPlayer({
+        supplied: 'mp3',
+        loop: false,
+        swfPath: APP_CONFIG.S3_BASE_URL + '/js/lib/jquery.jplayer.swf'
+    });
+}
+
+var onNarrativeTimeUpdate = function() {
+    // do something
+}
+
+var checkForAudio = function(slideAnchor) {
+    for (var i = 0; i < COPY.content.length; i++) {
+        if (COPY.content[i][0] === slideAnchor && COPY.content[i][9] !== null) {
+            $narrativePlayer.jPlayer('setMedia', {
+                mp3: APP_CONFIG.S3_BASE_URL + '/assets/' + COPY.content[i][9]
+            });
+            $narrativePlayer.jPlayer('play');
+        }
+        if (COPY.content[i][0] === slideAnchor && COPY.content[i][11] !== null) {
+            $ambientPlayer.jPlayer('setMedia', {
+                mp3: APP_CONFIG.S3_BASE_URL + '/assets/' + COPY.content[i][11]
+            });
+            $ambientPlayer.jPlayer('play');
+        }
+    }
+}
+
 $(document).ready(function() {
     $w = $(window).width();
     $h = $(window).height();
@@ -300,6 +343,9 @@ $(document).ready(function() {
     $arrows = $('.controlArrow');
     $nextArrow = $arrows.filter('.next');
     $upNext = $('.up-next');
+    $narrativePlayer = $('#audio-narrative');
+    $ambientPlayer = $('#audio-ambient');
+    arrowTest = determineArrowTest();
 
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
@@ -307,6 +353,7 @@ $(document).ready(function() {
     $arrows.on('click', onArrowsClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);
+    $(document).keydown(onDocumentKeyDown);
 
     ZeroClipboard.config({ swfPath: 'js/lib/ZeroClipboard.swf' });
     var clippy = new ZeroClipboard($(".clippy"));
@@ -315,11 +362,11 @@ $(document).ready(function() {
     });
 
     setUpFullPage();
+    setUpNarrativeAudio();
+    setUpAmbientAudio();
     resize();
 
-    arrowTest = determineArrowTest();
     // Redraw slides if the window resizes
     window.addEventListener("deviceorientation", resize, true);
     $(window).resize(resize);
-    $(document).keydown(onDocumentKeyDown);
 });

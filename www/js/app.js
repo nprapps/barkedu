@@ -343,14 +343,14 @@ var checkForAudio = function(slideAnchor) {
                     src: [ambientString],
                     autoplay: true,
                     loop: true,
-                    onfaded: onAmbientFade
                 });
                 if (ambientVolume) {
                     ambientPlayer.volume(ambientVolume);
                 }
             }
         } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
-            ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 2000);
+            console.log('fading');
+            ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);
         }
     }
 }
@@ -407,10 +407,6 @@ var animateProgress = function(subtitles) {
             $('.subtitles').text(activeSubtitle);
         }
     }
-}
-
-var onAmbientFade = function(ambientVolume) {
-    ambientPlayer.volume(ambientVolume);
 }
 
 $(document).ready(function() {

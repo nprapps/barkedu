@@ -21,11 +21,6 @@ var slideStartTime = new Date();
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
-var narrativePlayer = null;
-var ambientPlayer = null;
-var progressInterval;
-var subtitles;
-
 
 var resize = function() {
     $w = $(window).width();
@@ -79,7 +74,7 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     setSlidesForLazyLoading(slideIndex);
     showNavigation();
     slideStartTime = Date.now();
-    checkForAudio(slideAnchor);
+    AUDIO.checkForAudio(slideAnchor);
 
     // Completion tracking
     how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
@@ -225,7 +220,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     * Called when leaving a slide.
     */
     if (narrativePlayer && narrativePlayer.playing()) {
-        narrativePlayer.stop();
+        AUDIO.pauseNarrativePlayer();
     }
 
     var timeOnSlide = Math.abs(new Date() - slideStartTime);
@@ -301,118 +296,13 @@ var onClippyCopy = function(e) {
     ANALYTICS.copySummary();
 }
 
-var checkForAudio = function(slideAnchor) {
-    for (var i = 0; i < COPY.content.length; i++) {
-        var rowAnchor = COPY.content[i][0];
-        var narrativeFile = COPY.content[i][9];
-        var narrativeSubtitles = COPY.content[i][10];
-        var ambientFile = COPY.content[i][11];
-        var ambientVolume = COPY.content[i][12];
-
-        var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
-        var subtitlesString = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
-        var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
-
-        // check for new narrative file
-        if (rowAnchor === slideAnchor && narrativeFile !== null) {
-            $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
-            $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
-            $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
-
-            narrativePlayer = new Howl({
-                src: [narrativeString],
-                onend: pauseNarrativePlayer
-            });
-
-            $.getJSON(subtitlesString, function(data) {
-                subtitles = data.subtitles;
-            })
-
-            if (!narrativePlayer.playing()) {
-                setTimeout(function(){
-                    startNarrativePlayer(subtitles)
-                }, 2000);
-            }
-        }
-
-        // check for new ambient file
-        if (rowAnchor === slideAnchor && ambientFile !== null) {
-            // if we're not already playing this file
-            if (!ambientPlayer || ambientString !== ambientPlayer._src) {
-                ambientPlayer = new Howl({
-                    src: [ambientString],
-                    autoplay: true,
-                    loop: true,
-                });
-                if (ambientVolume) {
-                    ambientPlayer.volume(ambientVolume);
-                }
-            }
-        } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
-            console.log('fading');
-            ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);
-        }
-    }
-}
-
 var onControlBtnClick = function(e) {
     e.preventDefault();
 
     if (narrativePlayer.playing()) {
-        pauseNarrativePlayer(false);
+        AUDIO.pauseNarrativePlayer(false);
     } else {
-        startNarrativePlayer(subtitles);
-    }
-}
-
-var startNarrativePlayer = function(subtitles) {
-    narrativePlayer.play();
-    progressInterval = setInterval(function() {
-        animateProgress(subtitles);
-            }, 500);
-    $controlBtn.removeClass('play').addClass('pause');
-}
-
-var pauseNarrativePlayer = function(pause) {
-    narrativePlayer.pause();
-    clearInterval(progressInterval);
-    if (pause) {
-        $playedBar.css('width', $thisPlayerProgress.width() + 'px');
-    }
-    $controlBtn.removeClass('pause').addClass('play');
-}
-
-var animateProgress = function(subtitles) {
-    var totalTime = narrativePlayer.duration();
-    var position = narrativePlayer.seek();
-
-    // animate progress bar
-    var percentage = position / totalTime;
-
-    // if we're resetting the bar. ugh.
-    if ($playedBar.width() == $thisPlayerProgress.width()) {
-        $playedBar.addClass('no-transition');
-        $playedBar.css('width', 0);
-    } else {
-        $playedBar.removeClass('no-transition');
-        $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
-    }
-    // animate subtitles
-    var activeSubtitle = null;
-
-    $('.slide-title').fadeOut();
-    for (var i = 0; i < subtitles.length; i++) {
-        if (position < subtitles[i]['time']) {
-            activeSubtitle = subtitles[i - 1]['transcript'];
-            $('.subtitles').show();
-            $('.subtitles').text(activeSubtitle);
-            break;
-        } else {
-            // this is the last one
-            activeSubtitle = subtitles[i]['transcript'];
-            $('.subtitles').show();
-            $('.subtitles').text(activeSubtitle);
-        }
+        AUDIO.startNarrativePlayer(subtitles);
     }
 }
 

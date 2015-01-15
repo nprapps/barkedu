@@ -24,6 +24,8 @@ var lastSlideExitEvent;
 var narrativePlayer = null;
 var ambientPlayer = null;
 var progressInterval;
+var subtitles;
+
 
 var resize = function() {
     $w = $(window).width();
@@ -305,10 +307,10 @@ var checkForAudio = function(slideAnchor) {
         var narrativeFile = COPY.content[i][9];
         var narrativeSubtitles = COPY.content[i][10];
         var ambientFile = COPY.content[i][11];
+        var ambientVolume = COPY.content[i][12];
 
         var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
         var subtitlesString = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
-        var subtitles;
         var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
 
         // check for new narrative file
@@ -332,6 +334,7 @@ var checkForAudio = function(slideAnchor) {
                 }, 2000);
             }
         }
+
         // check for new ambient file
         if (rowAnchor === slideAnchor && ambientFile !== null) {
             // if we're not already playing this file
@@ -339,9 +342,15 @@ var checkForAudio = function(slideAnchor) {
                 ambientPlayer = new Howl({
                     src: [ambientString],
                     autoplay: true,
-                    loop: true
+                    loop: true,
+                    onfaded: onAmbientFade
                 });
+                if (ambientVolume) {
+                    ambientPlayer.volume(ambientVolume);
+                }
             }
+        } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
+            ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 2000);
         }
     }
 }
@@ -350,9 +359,9 @@ var onControlBtnClick = function(e) {
     e.preventDefault();
 
     if (narrativePlayer.playing()) {
-        pauseNarrativePlayer();
+        pauseNarrativePlayer(false);
     } else {
-        startNarrativePlayer();
+        startNarrativePlayer(subtitles);
     }
 }
 
@@ -364,9 +373,12 @@ var startNarrativePlayer = function(subtitles) {
     $controlBtn.removeClass('play').addClass('pause');
 }
 
-var pauseNarrativePlayer = function() {
+var pauseNarrativePlayer = function(pause) {
+    narrativePlayer.pause();
     clearInterval(progressInterval);
-    $playedBar.css('width', $thisPlayerProgress.width() + 'px');
+    if (pause) {
+        $playedBar.css('width', $thisPlayerProgress.width() + 'px');
+    }
     $controlBtn.removeClass('pause').addClass('play');
 }
 
@@ -397,7 +409,8 @@ var animateProgress = function(subtitles) {
     }
 }
 
-var animateSubtitles = function() {
+var onAmbientFade = function(ambientVolume) {
+    ambientPlayer.volume(ambientVolume);
 }
 
 $(document).ready(function() {

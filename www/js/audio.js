@@ -1,7 +1,7 @@
 var narrativePlayer = null;
 var ambientPlayer = null;
-var progressInterval;
-
+var progressInterval = null;
+var subtitles = null;
 var AUDIO = (function() {
     var checkForAudio = function(slideAnchor) {
         for (var i = 0; i < COPY.content.length; i++) {
@@ -38,13 +38,16 @@ var AUDIO = (function() {
         });
 
         $.getJSON(subFile, function(data) {
-            var subtitles = data.subtitles;
-            startNarrativePlayer(subtitles);
+            subtitles = data.subtitles;
+            startNarrativePlayer();
         });
     }
 
     var _setUpAmbientPlayer = function(audioFile, volume) {
         if (!ambientPlayer || audioFile !== ambientPlayer._src) {
+            if (ambientPlayer) {
+                ambientPlayer.unload();
+            }
             ambientPlayer = new Howl({
                 src: [audioFile],
                 autoplay: true,
@@ -54,11 +57,11 @@ var AUDIO = (function() {
         }
     }
 
-    var startNarrativePlayer = function(subtitles) {
+    var startNarrativePlayer = function() {
         narrativePlayer.play();
         progressInterval = setInterval(function() {
-            _animateProgress(subtitles);
-                }, 500);
+            _animateProgress();
+        }, 500);
         $controlBtn.removeClass('play').addClass('pause');
     }
 
@@ -67,11 +70,12 @@ var AUDIO = (function() {
         clearInterval(progressInterval);
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
+            narrativePlayer.unload();
         }
         $controlBtn.removeClass('pause').addClass('play');
     }
 
-    var _animateProgress = function(subtitles) {
+    var _animateProgress = function() {
         var totalTime = narrativePlayer.duration();
         var position = narrativePlayer.seek();
 

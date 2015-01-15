@@ -220,7 +220,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     * Called when leaving a slide.
     */
     if (narrativePlayer && narrativePlayer.playing()) {
-        AUDIO.pauseNarrativePlayer();
+        narrativePlayer.unload();
     }
 
     var timeOnSlide = Math.abs(new Date() - slideStartTime);
@@ -302,7 +302,7 @@ var onControlBtnClick = function(e) {
     if (narrativePlayer.playing()) {
         AUDIO.pauseNarrativePlayer(false);
     } else {
-        AUDIO.startNarrativePlayer(subtitles);
+        AUDIO.startNarrativePlayer();
     }
 }
 

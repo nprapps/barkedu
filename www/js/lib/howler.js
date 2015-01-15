@@ -1066,8 +1066,6 @@
 
       // Clear out `self`.
       self = null;
-
-      return null;
     },
 
     /**

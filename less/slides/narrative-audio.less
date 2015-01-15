@@ -1,17 +1,33 @@
 .narrative-player {
     position: relative;
+    width: 100%;
+    max-width: 600px;
+    min-height: 100px;
+    margin: 0;
+    left: 50%;
+
+    .slide-title, .subtitle-wrapper {
+        margin: 0 0 0 20px;
+    }
 
     .slide-title {
         h2 {
-            font-size: 36px;
+            font-size: 28px;
         }
     }
 
-    .subtitles {
+    .subtitle-wrapper {
         display: none;
+        p {
+            font-size: 16px;
+            line-height: 24px;
+        }
     }
 
     .controls {
+        position: absolute;
+        bottom: 0;
+        width: 80%;
         .control-btn, .progress {
             position: relative;
             display: inline-block;
@@ -36,7 +52,7 @@
             position: relative;
             height: 5px;
             float: right;
-            width: 98%;
+            width: 95%;
             top: 9px;
 
             .total, .played {

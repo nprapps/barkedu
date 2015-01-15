@@ -18,10 +18,8 @@ var slideStartTime = new Date();
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
-var narrativePlayer = false;
-var narrativePlaying = false;
-var ambientPlayer = false;
-var ambientPlaying = false;
+var narrativePlayer = null;
+var ambientPlayer = null;
 
 var resize = function() {
     $w = $(window).width();
@@ -220,9 +218,8 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
-    if (narrativePlaying) {
+    if (narrativePlayer && narrativePlayer.playing()) {
         narrativePlayer.stop();
-        narrativePlaying = false;
     }
 
     var timeOnSlide = Math.abs(new Date() - slideStartTime);
@@ -313,20 +310,18 @@ var checkForAudio = function(slideAnchor) {
             narrativePlayer = new Howl({
                 src: [narrativeString]
             });
-            if (!narrativePlaying) {
+            if (!narrativePlayer.playing()) {
                 setTimeout(function() {
                     narrativePlayer.play();
                     $('#slide-' + slideAnchor).find('.subtitle').text(narrativeSubtitles);
-                    narrativePlaying = true;
                 }, 2000);
-
             }
         }
 
         // check for new ambient file
         if (rowAnchor === slideAnchor && ambientFile !== null) {
             // if we're not already playing this file
-            if (ambientString !== ambientPlayer._src) {
+            if (!ambientPlayer || ambientString !== ambientPlayer._src) {
                 ambientPlayer = new Howl({
                     src: [ambientString],
                     autoplay: true,

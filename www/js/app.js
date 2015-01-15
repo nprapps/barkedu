@@ -388,8 +388,15 @@ var animateProgress = function(subtitles) {
 
     // animate progress bar
     var percentage = position / totalTime;
-    $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
 
+    // if we're resetting the bar. ugh.
+    if ($playedBar.width() == $thisPlayerProgress.width()) {
+        $playedBar.addClass('no-transition');
+        $playedBar.css('width', 0);
+    } else {
+        $playedBar.removeClass('no-transition');
+        $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
+    }
     // animate subtitles
     var activeSubtitle = null;
 

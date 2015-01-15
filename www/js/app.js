@@ -307,23 +307,31 @@ var checkForAudio = function(slideAnchor) {
         var ambientFile = COPY.content[i][11];
 
         var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
+        var subtitlesString = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
+        var subtitles;
         var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
-
-        $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
-        $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
-        $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
 
         // check for new narrative file
         if (rowAnchor === slideAnchor && narrativeFile !== null) {
+            $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
+            $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
+            $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
+
             narrativePlayer = new Howl({
                 src: [narrativeString],
                 onend: pauseNarrativePlayer
             });
+
+            $.getJSON(subtitlesString, function(data) {
+                subtitles = data.subtitles;
+            })
+
             if (!narrativePlayer.playing()) {
-                setTimeout(startNarrativePlayer, 2000);
+                setTimeout(function(){
+                    startNarrativePlayer(subtitles)
+                }, 2000);
             }
         }
-
         // check for new ambient file
         if (rowAnchor === slideAnchor && ambientFile !== null) {
             // if we're not already playing this file
@@ -348,9 +356,11 @@ var onControlBtnClick = function(e) {
     }
 }
 
-var startNarrativePlayer = function() {
+var startNarrativePlayer = function(subtitles) {
     narrativePlayer.play();
-    progressInterval = setInterval(animateProgress, 500);
+    progressInterval = setInterval(function() {
+        animateProgress(subtitles);
+            }, 500);
     $controlBtn.removeClass('play').addClass('pause');
 }
 
@@ -360,12 +370,34 @@ var pauseNarrativePlayer = function() {
     $controlBtn.removeClass('pause').addClass('play');
 }
 
-var animateProgress = function() {
+var animateProgress = function(subtitles) {
     var totalTime = narrativePlayer.duration();
     var position = narrativePlayer.seek();
+
+    // animate progress bar
     var percentage = position / totalTime;
-    console.log(percentage);
     $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
+
+    // animate subtitles
+    var activeSubtitle = null;
+
+    $('.slide-title').fadeOut();
+    for (var i = 0; i < subtitles.length; i++) {
+        if (position < subtitles[i]['time']) {
+            activeSubtitle = subtitles[i - 1]['transcript'];
+            $('.subtitles').show();
+            $('.subtitles').text(activeSubtitle);
+            break;
+        } else {
+            // this is the last one
+            activeSubtitle = subtitles[i]['transcript'];
+            $('.subtitles').show();
+            $('.subtitles').text(activeSubtitle);
+        }
+    }
+}
+
+var animateSubtitles = function() {
 }
 
 $(document).ready(function() {

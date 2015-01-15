@@ -274,18 +274,6 @@ var onNextPostClick = function(e) {
     return true;
 }
 
-var onControlBtnClick = function(e) {
-    e.preventDefault();
-
-    if (narrativePlayer.playing()) {
-        narrativePlayer.pause();
-        $(this).removeClass('pause').addClass('play');
-    } else {
-        narrativePlayer.play();
-        $(this).removeClass('play').addClass('pause');
-    }
-}
-
 var fakeMobileHover = function() {
     $(this).css({
         'background-color': '#fff',
@@ -323,18 +311,16 @@ var checkForAudio = function(slideAnchor) {
 
         $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
         $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
+        $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
 
         // check for new narrative file
         if (rowAnchor === slideAnchor && narrativeFile !== null) {
             narrativePlayer = new Howl({
                 src: [narrativeString],
-                onend: clearProgressInterval
+                onend: pauseNarrativePlayer
             });
             if (!narrativePlayer.playing()) {
-                setTimeout(function() {
-                    narrativePlayer.play();
-                    progressInterval = setInterval(animateProgress, 500);
-                }, 2000);
+                setTimeout(startNarrativePlayer, 2000);
             }
         }
 
@@ -352,18 +338,34 @@ var checkForAudio = function(slideAnchor) {
     }
 }
 
+var onControlBtnClick = function(e) {
+    e.preventDefault();
+
+    if (narrativePlayer.playing()) {
+        pauseNarrativePlayer();
+    } else {
+        startNarrativePlayer();
+    }
+}
+
+var startNarrativePlayer = function() {
+    narrativePlayer.play();
+    progressInterval = setInterval(animateProgress, 500);
+    $controlBtn.removeClass('play').addClass('pause');
+}
+
+var pauseNarrativePlayer = function() {
+    clearInterval(progressInterval);
+    $playedBar.css('width', $thisPlayerProgress.width() + 'px');
+    $controlBtn.removeClass('pause').addClass('play');
+}
+
 var animateProgress = function() {
     var totalTime = narrativePlayer.duration();
     var position = narrativePlayer.seek();
     var percentage = position / totalTime;
     console.log(percentage);
     $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
-}
-
-var clearProgressInterval = function() {
-    clearInterval(progressInterval);
-    $playedBar.css('width', $thisPlayerProgress.width() + 'px');
-    $controlBtn.removeClass('pause').addClass('play');
 }
 
 $(document).ready(function() {

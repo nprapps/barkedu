@@ -43,7 +43,6 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 100%;
             }
 
             .total {
@@ -54,9 +53,10 @@
             }
             .played {
                 background-color: #999;
+                width: 0;
                 height: 100%;
                 z-index: 1;
-                .transition(width 0.6s ease);
+                .transition(width 0.5s linear);
             }
         }
     }

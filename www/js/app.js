@@ -6,8 +6,6 @@ var $slides;
 var $arrows;
 var $nextArrow;
 var $startCardButton;
-var $narrativePlayer;
-var $ambientPlayer;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -20,9 +18,10 @@ var slideStartTime = new Date();
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
+var narrativePlayer = false;
 var narrativePlaying = false;
+var ambientPlayer = false;
 var ambientPlaying = false;
-
 
 var resize = function() {
     $w = $(window).width();
@@ -222,7 +221,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     * Called when leaving a slide.
     */
     if (narrativePlaying) {
-        $narrativePlayer.jPlayer('stop');
+        narrativePlayer.stop();
         narrativePlaying = false;
     }
 
@@ -299,27 +298,6 @@ var onClippyCopy = function(e) {
     ANALYTICS.copySummary();
 }
 
-var setUpNarrativeAudio = function() {
-    $narrativePlayer.jPlayer({
-        supplied: 'mp3',
-        loop: false,
-        timeupdate: onNarrativeTimeUpdate,
-        swfPath: APP_CONFIG.S3_BASE_URL + '/js/lib/jquery.jplayer.swf'
-    });
-}
-
-var setUpAmbientAudio = function() {
-    $ambientPlayer.jPlayer({
-        supplied: 'mp3',
-        loop: true,
-        swfPath: APP_CONFIG.S3_BASE_URL + '/js/lib/jquery.jplayer.swf'
-    });
-}
-
-var onNarrativeTimeUpdate = function() {
-    // do something
-}
-
 var checkForAudio = function(slideAnchor) {
     for (var i = 0; i < COPY.content.length; i++) {
         var rowAnchor = COPY.content[i][0];
@@ -332,12 +310,12 @@ var checkForAudio = function(slideAnchor) {
 
         // check for new narrative file
         if (rowAnchor === slideAnchor && narrativeFile !== null) {
-            $narrativePlayer.jPlayer('setMedia', {
-                mp3: narrativeString
+            narrativePlayer = new Howl({
+                src: [narrativeString]
             });
             if (!narrativePlaying) {
                 setTimeout(function() {
-                    $narrativePlayer.jPlayer('play');
+                    narrativePlayer.play();
                     $('#slide-' + slideAnchor).find('.subtitle').text(narrativeSubtitles);
                     narrativePlaying = true;
                 }, 2000);
@@ -348,11 +326,12 @@ var checkForAudio = function(slideAnchor) {
         // check for new ambient file
         if (rowAnchor === slideAnchor && ambientFile !== null) {
             // if we're not already playing this file
-            if (ambientString !== $ambientPlayer.data().jPlayer.status.src) {
-                $ambientPlayer.jPlayer('setMedia', {
-                    mp3: ambientString
+            if (ambientString !== ambientPlayer._src) {
+                ambientPlayer = new Howl({
+                    src: [ambientString],
+                    autoplay: true,
+                    loop: true
                 });
-                $ambientPlayer.jPlayer('play');
             }
         }
     }
@@ -368,8 +347,6 @@ $(document).ready(function() {
     $arrows = $('.controlArrow');
     $nextArrow = $arrows.filter('.next');
     $upNext = $('.up-next');
-    $narrativePlayer = $('#audio-narrative');
-    $ambientPlayer = $('#audio-ambient');
     arrowTest = determineArrowTest();
 
     $startCardButton.on('click', onStartCardButtonClick);
@@ -387,8 +364,6 @@ $(document).ready(function() {
     });
 
     setUpFullPage();
-    setUpNarrativeAudio();
-    setUpAmbientAudio();
     resize();
 
     // Redraw slides if the window resizes

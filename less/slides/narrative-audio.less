@@ -1,0 +1,63 @@
+.narrative-player {
+    position: relative;
+
+    .slide-title {
+        h2 {
+            font-size: 36px;
+        }
+    }
+
+    .subtitles {
+        display: none;
+    }
+
+    .controls {
+        .control-btn, .progress {
+            position: relative;
+            display: inline-block;
+        }
+
+        .control-btn {
+            float: left;
+
+            &.pause:before {
+                font-family: "FontAwesome";
+                content: "\f04c";
+                font-size: 16px;
+            }
+            &.play:before {
+                font-family: "FontAwesome";
+                content: "\f04b";
+                font-size: 16px;
+            }
+        }
+
+        .player-progress {
+            position: relative;
+            height: 5px;
+            float: right;
+            width: 98%;
+            top: 9px;
+
+            .total, .played {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+
+            .total {
+                background-color: white;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+            }
+            .played {
+                background-color: #999;
+                height: 100%;
+                z-index: 1;
+                .transition(width 0.6s ease);
+            }
+        }
+    }
+}

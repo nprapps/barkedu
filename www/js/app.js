@@ -6,6 +6,7 @@ var $slides;
 var $arrows;
 var $nextArrow;
 var $startCardButton;
+var $controlBtn;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -270,6 +271,18 @@ var onNextPostClick = function(e) {
     return true;
 }
 
+var onControlBtnClick = function(e) {
+    e.preventDefault();
+
+    if (narrativePlayer.playing()) {
+        narrativePlayer.pause();
+        $(this).removeClass('pause').addClass('play');
+    } else {
+        narrativePlayer.play();
+        $(this).removeClass('play').addClass('pause');
+    }
+}
+
 var fakeMobileHover = function() {
     $(this).css({
         'background-color': '#fff',
@@ -305,6 +318,9 @@ var checkForAudio = function(slideAnchor) {
         var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
         var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
 
+        var $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
+        var $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
+
         // check for new narrative file
         if (rowAnchor === slideAnchor && narrativeFile !== null) {
             narrativePlayer = new Howl({
@@ -313,7 +329,14 @@ var checkForAudio = function(slideAnchor) {
             if (!narrativePlayer.playing()) {
                 setTimeout(function() {
                     narrativePlayer.play();
-                    $('#slide-' + slideAnchor).find('.subtitle').text(narrativeSubtitles);
+
+                    var totalTime = narrativePlayer.duration();
+                    setInterval(function() {
+                        var position = narrativePlayer.seek();
+                        var percentage = position / totalTime;
+                        console.log($thisPlayerProgress.width());
+                        $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
+                    }, 500)
                 }, 2000);
             }
         }
@@ -342,12 +365,14 @@ $(document).ready(function() {
     $arrows = $('.controlArrow');
     $nextArrow = $arrows.filter('.next');
     $upNext = $('.up-next');
+    $controlBtn = $('.control-btn');
     arrowTest = determineArrowTest();
 
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
     $arrows.on('click', onArrowsClick);
+    $controlBtn.on('click', onControlBtnClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);
     $(document).keydown(onDocumentKeyDown);

@@ -1,0 +1,18 @@
+{% extends '_slide.html' %}
+{% block slide_content %}
+<div class="narrative-player">
+    <div class="slide-title">
+        <h2>{{ row.text1 }}</h2>
+    </div>
+    <div class="subtitles">
+        {{ row.narrative_audio_subtitles }}
+    </div>
+    <div class="controls">
+        <a class="pause control-btn"></a>
+        <div class="player-progress">
+            <div class="total"></div>
+            <div class="played"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

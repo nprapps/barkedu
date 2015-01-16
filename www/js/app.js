@@ -227,9 +227,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
-    if (narrativePlayer && narrativePlayer.playing()) {
-        narrativePlayer.unload();
-    }
+    AUDIO.cleanUpAudio();
 
     var timeOnSlide = Math.abs(new Date() - slideStartTime);
     ANALYTICS.exitSlide(slideIndex.toString(), timeOnSlide, lastSlideExitEvent);
@@ -307,11 +305,7 @@ var onClippyCopy = function(e) {
 var onControlBtnClick = function(e) {
     e.preventDefault();
 
-    if (narrativePlayer.playing()) {
-        AUDIO.pauseNarrativePlayer(false);
-    } else {
-        AUDIO.startNarrativePlayer();
-    }
+    AUDIO.toggleNarrativeAudio();
 }
 
 var fadeBgImage = function(slideAnchor) {

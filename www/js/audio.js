@@ -1,8 +1,9 @@
-var narrativePlayer = null;
-var ambientPlayer = null;
-var progressInterval = null;
-var subtitles = null;
 var AUDIO = (function() {
+    var narrativePlayer = null;
+    var ambientPlayer = null;
+    var subtitles = null;
+    var progressInterval = null;
+
     var checkForAudio = function(slideAnchor) {
         for (var i = 0; i < COPY.content.length; i++) {
             var rowAnchor = COPY.content[i][0];
@@ -41,12 +42,12 @@ var AUDIO = (function() {
 
         narrativePlayer = new Howl({
             src: [audioFilename],
-            onend: pauseNarrativePlayer
+            onend: _pauseNarrativePlayer
         });
 
         $.getJSON(subFile, function(data) {
             subtitles = data.subtitles;
-            startNarrativePlayer();
+            _startNarrativePlayer();
         });
     }
 
@@ -69,7 +70,7 @@ var AUDIO = (function() {
         }
     }
 
-    var startNarrativePlayer = function() {
+    var _startNarrativePlayer = function() {
         narrativePlayer.play();
         progressInterval = setInterval(function() {
             _animateProgress();
@@ -77,7 +78,7 @@ var AUDIO = (function() {
         $controlBtn.removeClass('play').addClass('pause');
     }
 
-    var pauseNarrativePlayer = function(end) {
+    var _pauseNarrativePlayer = function(end) {
         narrativePlayer.pause();
         clearInterval(progressInterval);
         if (end) {
@@ -134,9 +135,23 @@ var AUDIO = (function() {
         }
     }
 
+    var cleanUpAudio = function() {
+        if (narrativePlayer && narrativePlayer.playing()) {
+            narrativePlayer.unload();
+        }
+    }
+
+    var toggleNarrativeAudio = function() {
+        if (narrativePlayer.playing()) {
+            _pauseNarrativePlayer(false);
+        } else {
+            _startNarrativePlayer();
+        }
+    }
+
     return {
         'checkForAudio': checkForAudio,
-        'startNarrativePlayer': startNarrativePlayer,
-        'pauseNarrativePlayer': pauseNarrativePlayer
+        'cleanUpAudio': cleanUpAudio,
+        'toggleNarrativeAudio': toggleNarrativeAudio
     }
 }());

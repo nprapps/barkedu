@@ -39,7 +39,7 @@ var AUDIO = (function() {
 
         $.getJSON(subFile, function(data) {
             subtitles = data.subtitles;
-            startNarrativePlayer();
+            setTimeout(startNarrativePlayer, 2000);
         });
     }
 

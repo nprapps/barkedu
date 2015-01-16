@@ -53,14 +53,19 @@ var AUDIO = (function() {
     var _setUpAmbientPlayer = function(audioFile, volume) {
         if (!ambientPlayer || audioFile !== ambientPlayer._src) {
             if (ambientPlayer) {
-                ambientPlayer.unload();
+                ambientPlayer.fade(ambientPlayer.volume(), 0, 2000);
             }
             ambientPlayer = new Howl({
                 src: [audioFile],
                 autoplay: true,
                 loop: true,
-                volume: volume ? volume : 1
+                volume: 0,
+                onfaded: _onAmbientFaded,
+                pool: 2
             });
+
+            var fadeVolume = volume ? volume : 1;
+            ambientPlayer.fade(0, fadeVolume, 4000);
         }
     }
 
@@ -78,8 +83,6 @@ var AUDIO = (function() {
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
             narrativePlayer.unload();
-            $subtitleWrapper.hide();
-            $slideTitle.fadeIn();
         }
         $controlBtn.removeClass('pause').addClass('play');
     }
@@ -116,6 +119,21 @@ var AUDIO = (function() {
             }
         }
     }
+
+    var _onAmbientFaded = function(id) {
+        /*
+        * Custom remove a stale Howl object
+        */
+        if (ambientPlayer.volume(null, id) === 0) {
+            for (var i = 0; i < Howler._howls.length; i++) {
+                var sound = Howler._howls[i]._sounds[0];
+                if (sound._id === id) {
+                    Howler._howls.splice(i, 1);
+                }
+            }
+        }
+    }
+
     return {
         'checkForAudio': checkForAudio,
         'startNarrativePlayer': startNarrativePlayer,

@@ -840,7 +840,6 @@
               setTimeout(function() {
                 sound._volume = to;
                 self.volume(to);
-                console.log(self.volume());
                 self._emit('faded', id);
               }, end - ctx.currentTime > 0 ? Math.ceil((end - ctx.currentTime) * 1000) : 0);
             }.bind(self, ids[i], sound), len);

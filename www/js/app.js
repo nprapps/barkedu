@@ -315,13 +315,7 @@ var onControlBtnClick = function(e) {
 }
 
 var fadeBgImage = function(slideAnchor) {
-    for (var i = 0; i < COPY.content.length; i++) {
-        var rowAnchor = COPY.content[i][0];
-
-        if (rowAnchor === slideAnchor) {
-            $('#slide-' + slideAnchor).addClass('image-fade-start');
-        }
-    }
+    $('#slide-' + slideAnchor).addClass('image-fade-start');
 }
 
 $(document).ready(function() {

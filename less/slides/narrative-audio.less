@@ -1,10 +1,18 @@
+.narrative-audio{
+    .full-block .full-block-cell {
+        vertical-align: bottom;
+    }
+}
+
 .narrative-player {
     position: relative;
     width: 100%;
     max-width: 600px;
-    min-height: 100px;
+    min-height: 150px;
     margin: 0;
     left: 50%;
+    background-color: @caption-screen-dark;
+    padding: 20px;
 
     .slide-title, .subtitle-wrapper {
         margin: 0 0 0 20px;
@@ -26,8 +34,8 @@
 
     .controls {
         position: absolute;
-        bottom: 0;
-        width: 80%;
+        bottom: 20px;
+        width: 95%;
         .control-btn, .progress {
             position: relative;
             display: inline-block;

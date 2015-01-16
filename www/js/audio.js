@@ -34,13 +34,13 @@ var AUDIO = (function() {
         }
     }
 
-    var _setUpNarrativePlayer = function(audioFile, subFile) {
+    var _setUpNarrativePlayer = function(audioFilename, subFile) {
         if (narrativePlayer) {
             narrativePlayer.unload();
         }
 
         narrativePlayer = new Howl({
-            src: [audioFile],
+            src: [audioFilename],
             onend: pauseNarrativePlayer
         });
 
@@ -50,18 +50,18 @@ var AUDIO = (function() {
         });
     }
 
-    var _setUpAmbientPlayer = function(audioFile, volume) {
-        if (!ambientPlayer || audioFile !== ambientPlayer._src) {
+    var _setUpAmbientPlayer = function(audioFilename, volume) {
+        if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
             if (ambientPlayer) {
                 ambientPlayer.fade(ambientPlayer.volume(), 0, 2000);
             }
+
             ambientPlayer = new Howl({
-                src: [audioFile],
+                src: [audioFilename],
                 autoplay: true,
                 loop: true,
                 volume: 0,
                 onfaded: _onAmbientFaded,
-                pool: 2
             });
 
             var fadeVolume = volume ? volume : 1;

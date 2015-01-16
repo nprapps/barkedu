@@ -35,6 +35,10 @@ var AUDIO = (function() {
     }
 
     var _setUpNarrativePlayer = function(audioFile, subFile) {
+        if (narrativePlayer) {
+            narrativePlayer.unload();
+        }
+
         narrativePlayer = new Howl({
             src: [audioFile],
             onend: pauseNarrativePlayer
@@ -42,7 +46,7 @@ var AUDIO = (function() {
 
         $.getJSON(subFile, function(data) {
             subtitles = data.subtitles;
-            setTimeout(startNarrativePlayer, 2000);
+            startNarrativePlayer();
         });
     }
 

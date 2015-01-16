@@ -19,6 +19,9 @@ var AUDIO = (function() {
                 $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
                 $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
                 $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
+                $subtitleWrapper = $('#slide-' + rowAnchor).find('.subtitle-wrapper');
+                $subtitles = $('#slide-' + rowAnchor).find('.subtitles');
+                $slideTitle = $('#slide-' + rowAnchor).find('.slide-title');
 
                 _setUpNarrativePlayer(narrativeString, subtitlesString);
             }
@@ -71,8 +74,8 @@ var AUDIO = (function() {
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
             narrativePlayer.unload();
-            $('.subtitle-wrapper').hide();
-            $('.slide-title').fadeIn();
+            $subtitleWrapper.hide();
+            $slideTitle.fadeIn();
         }
         $controlBtn.removeClass('pause').addClass('play');
     }
@@ -94,17 +97,17 @@ var AUDIO = (function() {
         }
         // animate subtitles
         var activeSubtitle = null;
-        $('.slide-title').hide();
+        $slideTitle.hide();
         for (var i = 0; i < subtitles.length; i++) {
             if (position < subtitles[i]['time']) {
                 activeSubtitle = subtitles[i - 1]['transcript'];
-                $('.subtitle-wrapper').fadeIn();
-                $('.subtitles').text(activeSubtitle);
+                $subtitleWrapper.fadeIn();
+                $subtitles.text(activeSubtitle);
                 break;
             } else {
                 // this is the last one
                 activeSubtitle = subtitles[i]['transcript'];
-                $('.subtitles').text(activeSubtitle);
+                $subtitles.text(activeSubtitle);
             }
         }
     }

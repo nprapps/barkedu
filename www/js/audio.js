@@ -71,6 +71,8 @@ var AUDIO = (function() {
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
             narrativePlayer.unload();
+            $('.subtitle-wrapper').hide();
+            $('.slide-title').fadeIn();
         }
         $controlBtn.removeClass('pause').addClass('play');
     }

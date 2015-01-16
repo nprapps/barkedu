@@ -15,7 +15,7 @@ var AUDIO = (function() {
             var subtitlesString = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
             var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
 
-            if (rowAnchor === slideAnchor && narrativeFile !== null) {
+            if (rowAnchor === slideAnchor && narrativeFile !== null && !NO_AUDIO) {
                 $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
                 $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
                 $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
@@ -26,7 +26,7 @@ var AUDIO = (function() {
                 _setUpNarrativePlayer(narrativeString, subtitlesString);
             }
 
-            if (rowAnchor === slideAnchor && ambientFile !== null) {
+            if (rowAnchor === slideAnchor && ambientFile !== null && !NO_AUDIO) {
                 _setUpAmbientPlayer(ambientString, ambientVolume);
             } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
                 ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);

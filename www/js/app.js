@@ -24,6 +24,7 @@ var slideStartTime = new Date();
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
+var NO_AUDIO = (window.location.search.indexOf('noaudio') >= 0);
 
 var resize = function() {
     $w = $(window).width();
@@ -78,6 +79,10 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     showNavigation();
     slideStartTime = Date.now();
     AUDIO.checkForAudio(slideAnchor);
+
+    if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
+        fadeBgImage(slideAnchor);
+    }
 
     // Completion tracking
     how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
@@ -306,6 +311,16 @@ var onControlBtnClick = function(e) {
         AUDIO.pauseNarrativePlayer(false);
     } else {
         AUDIO.startNarrativePlayer();
+    }
+}
+
+var fadeBgImage = function(slideAnchor) {
+    for (var i = 0; i < COPY.content.length; i++) {
+        var rowAnchor = COPY.content[i][0];
+
+        if (rowAnchor === slideAnchor) {
+            $('#slide-' + slideAnchor).addClass('image-fade-start');
+        }
     }
 }
 

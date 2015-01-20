@@ -283,6 +283,7 @@ img {
         -webkit-background-size: cover;
         background-size: cover;
         .transition(opacity 5s linear);
+        z-index: 0;
 
         #slide-d& {
             background-image: url('../assets/burial2.jpg');
@@ -290,7 +291,7 @@ img {
     }
 
     &.image-fade-start:after {
-        opacity: 0.75
+        opacity: 0.75;
     }
 }
 
@@ -325,23 +326,23 @@ img {
     }
 }
 
-//default text template 
+//default text template
 .centered-text {
     .full-block-content {
         @media @screen-small-above {
             padding-top: 0;
             padding-bottom: 100px;
-            width: 60%; 
+            width: 60%;
         }
-        
+
         p {
             @media @screen-small-above {
-                
+
                 font-size: 20px;
             }
         }
     }
-    
+
 }
 
 // full bleed with image
@@ -355,7 +356,7 @@ img {
         }
 
     }
-    
+
     .foreground-image {
         max-width: 450px;
         margin: 0 auto;

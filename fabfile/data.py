@@ -3,6 +3,7 @@
 """
 Commands that update or process the application data.
 """
+import csv
 from datetime import datetime
 import json
 
@@ -12,6 +13,41 @@ from twitter import Twitter, OAuth
 
 import app_config
 import copytext
+
+@task
+def parse_transcript(path):
+    data = {
+        'subtitles': []
+    }
+
+    filename, ext = path.split('.')
+
+    with open('data/%s' % path, 'rb') as f:
+        tab_reader = csv.reader(f, delimiter='\t')
+        headers = tab_reader.next()
+        for row in tab_reader:
+            words = row[0]
+
+            time_str = row[1]
+            hours, minutes, seconds, frame = time_str.split(':')
+            hours = int(hours)
+            minutes = int(minutes)
+            seconds = int(seconds)
+            frame = int(frame)
+
+            decimal = (float(frame) / 24)
+            total_seconds = (hours * 3600) + (minutes * 60) + (seconds + decimal)
+
+            segment = {
+                'time': total_seconds,
+                'transcript': words
+            }
+
+            data['subtitles'].append(segment)
+
+    with open('www/data/%s.json' % filename, 'w') as wf:
+        wf.write(json.dumps(data))
+
 
 @task(default=True)
 def update():

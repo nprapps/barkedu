@@ -68,11 +68,9 @@ var AUDIO = (function() {
 
             var fadeVolume = volume ? volume : 1;
             if (ambientPlayer._webAudio) {
-                console.log('fades');
                 ambientPlayer.on('faded', _onAmbientFaded);
                 ambientPlayer.fade(0, fadeVolume, 4000);
             } else {
-                console.log('volume');
                 ambientPlayer.volume(fadeVolume);
                 _onAmbientFaded(ambientId);
             }

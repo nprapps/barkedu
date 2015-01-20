@@ -20,10 +20,11 @@ var optimalWidth;
 var optimalHeight;
 var w;
 var h;
-var slideStartTime = new Date();
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
+var firstRightArrowClicked = false;
+var hammer;
 var NO_AUDIO = (window.location.search.indexOf('noaudio') >= 0);
 
 var resize = function() {
@@ -77,7 +78,6 @@ var onPageLoad = function() {
 var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     setSlidesForLazyLoading(slideIndex);
     showNavigation();
-    slideStartTime = Date.now();
     AUDIO.checkForAudio(slideAnchor);
 
     if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
@@ -228,14 +228,14 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     * Called when leaving a slide.
     */
     AUDIO.cleanUpAudio();
-
-    var timeOnSlide = Math.abs(new Date() - slideStartTime);
-    ANALYTICS.exitSlide(slideIndex.toString(), timeOnSlide, lastSlideExitEvent);
+    ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
 }
 
 var onFirstRightArrowClick = function() {
-    var timeOnSlide = Math.abs(new Date() - slideStartTime);
-    ANALYTICS.firstRightArrowClick(arrowTest, timeOnSlide);
+    if (firstRightArrowClicked === false) {
+        ANALYTICS.firstRightArrowClick(arrowTest);
+        firstRightArrowClicked = true;
+    }
 }
 
 var onStartCardButtonClick = function() {
@@ -302,6 +302,20 @@ var onClippyCopy = function(e) {
     ANALYTICS.copySummary();
 }
 
+var onSwipeLeft = function(e) {
+    if (isTouch) {
+        lastSlideExitEvent = 'swipeleft';
+        $.fn.fullpage.moveSlideRight();
+    }
+}
+
+var onSwipeRight = function(e) {
+    if (isTouch) {
+        lastSlideExitEvent = 'swiperight';
+        $.fn.fullpage.moveSlideLeft();
+    }
+}
+
 var onControlBtnClick = function(e) {
     e.preventDefault();
     AUDIO.toggleNarrativeAudio();
@@ -329,6 +343,9 @@ $(document).ready(function() {
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
     $arrows.on('click', onArrowsClick);
+    hammer = new Hammer(document.body);
+    hammer.on('swipeleft', onSwipeLeft);
+    hammer.on('swiperight', onSwipeRight);
     $controlBtn.on('click', onControlBtnClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);

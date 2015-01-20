@@ -1,0 +1,9 @@
+{% extends '_slide.html' %}
+{% block slide_content %}
+<div class="foreground-image">
+        <img class="lazy-load" data-src="{{ row.foreground_media }}" alt="{{ row.caption|smarty }}">
+    </div>
+    <div class="subtitle bleed-box">
+        {{ row.text1 }}
+    </div>
+{% endblock %}

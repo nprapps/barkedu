@@ -304,8 +304,8 @@ var onClippyCopy = function(e) {
 
 var onControlBtnClick = function(e) {
     e.preventDefault();
-
     AUDIO.toggleNarrativeAudio();
+    e.stopPropagation();
 }
 
 var fadeBgImage = function(slideAnchor) {

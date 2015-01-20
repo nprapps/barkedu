@@ -31,6 +31,7 @@ var AUDIO = (function() {
             if (rowAnchor === slideAnchor && ambientFile !== null && !NO_AUDIO) {
                 _setUpAmbientPlayer(ambientString, ambientVolume);
             } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
+                // todo: handle browsers without webaudio
                 ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);
             }
         }

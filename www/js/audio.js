@@ -1,6 +1,7 @@
 var AUDIO = (function() {
     var narrativePlayer = null;
     var ambientPlayer = null;
+    var ambientId = null;
     var subtitles = null;
     var progressInterval = null;
 
@@ -62,11 +63,19 @@ var AUDIO = (function() {
                 autoplay: true,
                 loop: true,
                 volume: 0,
-                onfaded: _onAmbientFaded,
             });
+            ambientId = ambientPlayer._sounds[0]._id
 
             var fadeVolume = volume ? volume : 1;
-            ambientPlayer.fade(0, fadeVolume, 4000);
+            if (ambientPlayer._webAudio) {
+                console.log('fades');
+                ambientPlayer.on('faded', _onAmbientFaded);
+                ambientPlayer.fade(0, fadeVolume, 4000);
+            } else {
+                console.log('volume');
+                ambientPlayer.volume(fadeVolume);
+                _onAmbientFaded(ambientId);
+            }
         }
     }
 

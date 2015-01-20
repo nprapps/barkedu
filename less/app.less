@@ -229,7 +229,6 @@ h1,h2,h3,h4,h5,h6,p,ul,ol,li {
     .background-size(cover);
     background-position: center center;
     position: relative;
-    z-index: -2;
 }
 
 // full width container within a section or slide
@@ -284,7 +283,7 @@ img {
         -webkit-background-size: cover;
         background-size: cover;
         .transition(opacity 5s linear);
-        z-index: -1;
+        z-index: 0;
 
         #slide-d& {
             background-image: url('../assets/burial2.jpg');
@@ -307,7 +306,7 @@ img {
         bottom: 0;
         background: rgba(0,0,0,0.5);
         height: 100%;
-        z-index: -2;
+        z-index: -1;
     }
 }
 

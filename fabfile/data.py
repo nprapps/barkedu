@@ -3,8 +3,11 @@
 """
 Commands that update or process the application data.
 """
+import codecs
 import csv
 from datetime import datetime
+from glob import glob
+from io import BytesIO
 import json
 
 from fabric.api import task
@@ -15,18 +18,38 @@ import app_config
 import copytext
 
 @task
+def build_subtitles():
+    """
+    Parse transcripts for everything in data/subtitles folder
+    """
+    for path in glob('data/subtitles/*.csv'):
+        parse_transcript(path)
+
+@task
 def parse_transcript(path):
+    """
+    Parse a Premiere .tsv file, calculate total seconds and write to JSON for use in the app.
+    """
     data = {
         'subtitles': []
     }
-    filename, ext = path.split('.')
+    filename, ext = path.split('/')[-1].split('.')
 
-    with open('data/%s' % path, 'rb') as f:
-        tab_reader = csv.reader(f, delimiter='\t')
+    with codecs.open(path, 'rb', encoding='utf16') as f:
+        transcript = f.read().encode('utf-8')
+        tab_reader = csv.reader(BytesIO(transcript), delimiter='\t')
         headers = tab_reader.next()
         for row in tab_reader:
-            words = row[0]
-            hours, minutes, seconds, frame = [int(x) for x in row[1].split(':')]
+            # Premiere exports kind of suck
+            if row[0] == '':
+                words = row[1].strip()
+                time_str = row[2]
+            else:
+                words = row[0].strip()
+                time_str = row[1]
+
+            hours, minutes, seconds, frame = [int(x) for x in time_str.split(':')]
+
 
             decimal = (float(frame) / 24)
             total_seconds = (hours * 3600) + (minutes * 60) + (seconds + decimal)

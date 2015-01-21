@@ -29,11 +29,7 @@ def parse_transcript(path):
             words = row[0]
 
             time_str = row[1]
-            hours, minutes, seconds, frame = time_str.split(':')
-            hours = int(hours)
-            minutes = int(minutes)
-            seconds = int(seconds)
-            frame = int(frame)
+            hours, minutes, seconds, frame = [int(x) for x in time_str.split(':')]
 
             decimal = (float(frame) / 24)
             total_seconds = (hours * 3600) + (minutes * 60) + (seconds + decimal)

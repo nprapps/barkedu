@@ -1,8 +1,7 @@
 var AUDIO = (function() {
     var narrativePlayer = null;
-    var narrativePlaying = false;
     var ambientPlayer = null;
-    var ambientPlaying = false;;
+    var ambientId = null;
     var subtitles = null;
     var progressInterval = null;
 
@@ -31,7 +30,7 @@ var AUDIO = (function() {
 
             if (rowAnchor === slideAnchor && ambientFile !== null && !NO_AUDIO) {
                 _setUpAmbientPlayer(ambientString, ambientVolume);
-            } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlaying) {
+            } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
                 // todo: handle browsers without webaudio
                 ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);
             }
@@ -44,7 +43,7 @@ var AUDIO = (function() {
         }
 
         narrativePlayer = new Howl({
-            urls: [audioFilename],
+            src: [audioFilename],
             onend: _pauseNarrativePlayer
         });
 
@@ -57,25 +56,30 @@ var AUDIO = (function() {
     var _setUpAmbientPlayer = function(audioFilename, volume) {
         if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
             if (ambientPlayer) {
-                ambientPlayer.fade(ambientPlayer.volume(), 0, 2000, _onAmbientFaded);
+                ambientPlayer.fade(ambientPlayer.volume(), 0, 2000);
             }
 
             ambientPlayer = new Howl({
-                urls: [audioFilename],
+                src: [audioFilename],
                 autoplay: true,
                 loop: true,
                 volume: 0,
             });
-            ambientPlaying = true;
+            ambientId = ambientPlayer._sounds[0]._id
 
             var fadeVolume = volume ? volume : 1;
-            ambientPlayer.fade(0, fadeVolume, 4000, _onAmbientFaded);
+            if (ambientPlayer._webAudio) {
+                ambientPlayer.on('faded', _onAmbientFaded);
+                ambientPlayer.fade(0, fadeVolume, 4000);
+            } else {
+                ambientPlayer.volume(fadeVolume);
+                _onAmbientFaded(ambientId);
+            }
         }
     }
 
     var _startNarrativePlayer = function() {
         narrativePlayer.play();
-        narrativePlaying = true;
         progressInterval = setInterval(function() {
             _animateProgress();
         }, 500);
@@ -84,7 +88,6 @@ var AUDIO = (function() {
 
     var _pauseNarrativePlayer = function(end) {
         narrativePlayer.pause();
-        narrativePlaying = false;
         clearInterval(progressInterval);
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
@@ -94,8 +97,8 @@ var AUDIO = (function() {
     }
 
     var _animateProgress = function() {
-        var totalTime = narrativePlayer._duration;
-        var position = narrativePlayer.pos();
+        var totalTime = narrativePlayer.duration();
+        var position = narrativePlayer.seek();
 
         // animate progress bar
         var percentage = position / totalTime;
@@ -126,26 +129,28 @@ var AUDIO = (function() {
         }
     }
 
-    var _onAmbientFaded = function() {
+    var _onAmbientFaded = function(id) {
         /*
         * Custom remove a stale Howl object
         */
-        for (var i = 0; i < Howler._howls.length; i++) {
-            var sound = Howler._howls[i];
-            if (sound._volume === 0) {
-                Howler._howls.splice(i, 1);
+        if (ambientPlayer.volume(null, id) === 0) {
+            for (var i = 0; i < Howler._howls.length; i++) {
+                var sound = Howler._howls[i]._sounds[0];
+                if (sound._id === id) {
+                    Howler._howls.splice(i, 1);
+                }
             }
         }
     }
 
     var cleanUpAudio = function() {
-        if (narrativePlayer && narrativePlaying) {
+        if (narrativePlayer && narrativePlayer.playing()) {
             narrativePlayer.unload();
         }
     }
 
     var toggleNarrativeAudio = function() {
-        if (narrativePlaying) {
+        if (narrativePlayer.playing()) {
             _pauseNarrativePlayer(false);
         } else {
             _startNarrativePlayer();
@@ -154,19 +159,17 @@ var AUDIO = (function() {
 
     var toggleAllAudio = function() {
         if (narrativePlayer) {
-            if (narrativePlaying) {
+            if (narrativePlayer.playing()) {
                 _pauseNarrativePlayer(false);
             } else {
                 _startNarrativePlayer();
             }
         }
         if (ambientPlayer) {
-            if (ambientPlaying) {
+            if (ambientPlayer.playing()) {
                 ambientPlayer.pause();
-                ambientPlaying = false;
             } else {
                 ambientPlayer.play();
-                ambientPlaying = true;
             }
         }
     }
@@ -174,6 +177,7 @@ var AUDIO = (function() {
     return {
         'checkForAudio': checkForAudio,
         'cleanUpAudio': cleanUpAudio,
-        'toggleNarrativeAudio': toggleNarrativeAudio
+        'toggleNarrativeAudio': toggleNarrativeAudio,
+        'toggleAllAudio': toggleAllAudio
     }
 }());

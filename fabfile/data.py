@@ -19,7 +19,6 @@ def parse_transcript(path):
     data = {
         'subtitles': []
     }
-
     filename, ext = path.split('.')
 
     with open('data/%s' % path, 'rb') as f:
@@ -27,18 +26,15 @@ def parse_transcript(path):
         headers = tab_reader.next()
         for row in tab_reader:
             words = row[0]
-
-            time_str = row[1]
-            hours, minutes, seconds, frame = [int(x) for x in time_str.split(':')]
+            hours, minutes, seconds, frame = [int(x) for x in row[1].split(':')]
 
             decimal = (float(frame) / 24)
             total_seconds = (hours * 3600) + (minutes * 60) + (seconds + decimal)
 
             segment = {
                 'time': total_seconds,
-                'transcript': words
+                'transcript': words,
             }
-
             data['subtitles'].append(segment)
 
     with open('www/data/%s.json' % filename, 'w') as wf:

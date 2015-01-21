@@ -157,9 +157,27 @@ var AUDIO = (function() {
         }
     }
 
+    var toggleAllAudio = function() {
+        if (narrativePlayer) {
+            if (narrativePlayer.playing()) {
+                _pauseNarrativePlayer(false);
+            } else {
+                _startNarrativePlayer();
+            }
+        }
+        if (ambientPlayer) {
+            if (ambientPlayer.playing()) {
+                ambientPlayer.pause();
+            } else {
+                ambientPlayer.play();
+            }
+        }
+    }
+
     return {
         'checkForAudio': checkForAudio,
         'cleanUpAudio': cleanUpAudio,
-        'toggleNarrativeAudio': toggleNarrativeAudio
+        'toggleNarrativeAudio': toggleNarrativeAudio,
+        'toggleAllAudio': toggleAllAudio
     }
 }());

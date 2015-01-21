@@ -44,7 +44,9 @@ var AUDIO = (function() {
 
         narrativePlayer = new Howl({
             src: [audioFilename],
-            onend: _pauseNarrativePlayer
+            onend: _pauseNarrativePlayer,
+            iOSAutoEnable: false,
+            html5: isTouch ? true : false
         });
 
         $.getJSON(subFile, function(data) {
@@ -64,6 +66,8 @@ var AUDIO = (function() {
                 autoplay: true,
                 loop: true,
                 volume: 0,
+                iOSAutoEnable: false,
+                html5: isTouch ? true : false
             });
             ambientId = ambientPlayer._sounds[0]._id
 

@@ -50,7 +50,6 @@ def parse_transcript(path):
 
             hours, minutes, seconds, frame = [int(x) for x in time_str.split(':')]
 
-
             decimal = (float(frame) / 24)
             total_seconds = (hours * 3600) + (minutes * 60) + (seconds + decimal)
 

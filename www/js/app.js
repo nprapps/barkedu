@@ -326,37 +326,6 @@ var fadeBgImage = function(slideAnchor) {
     $('#slide-' + slideAnchor).addClass('image-fade-start');
 }
 
-// use the property name to generate the prefixed event name
-
-
-var onVisibilityChange = function() {
-    AUDIO.toggleAllAudio();
-}
-
-var getHiddenProperty = function() {
-    var prefixes = ['webkit','moz','ms','o'];
-
-    // if 'hidden' is natively supported just return it
-    if ('hidden' in document) return 'hidden';
-
-    // otherwise loop over all the known prefixes until we find one
-    for (var i = 0; i < prefixes.length; i++){
-        if ((prefixes[i] + 'Hidden') in document)
-            return prefixes[i] + 'Hidden';
-    }
-
-    // otherwise it's not supported
-    return null;
-}
-
-var isHidden = function() {
-    var prop = getHiddenProp();
-    if (!prop) return false;
-
-    return document[prop];
-}
-
-
 $(document).ready(function() {
     $w = $(window).width();
     $h = $(window).height();
@@ -394,11 +363,4 @@ $(document).ready(function() {
     // Redraw slides if the window resizes
     window.addEventListener("deviceorientation", resize, true);
     $(window).resize(resize);
-
-    // listen for page visibility changes
-    var visibilityProperty = getHiddenProperty();
-    if (visibilityProperty) {
-        var evtname = visibilityProperty.replace(/[H|h]idden/,'') + 'visibilitychange';
-        document.addEventListener(evtname, onVisibilityChange);
-    }
 });

@@ -174,7 +174,6 @@ var AUDIO = (function() {
     return {
         'checkForAudio': checkForAudio,
         'cleanUpAudio': cleanUpAudio,
-        'toggleNarrativeAudio': toggleNarrativeAudio,
-        'toggleAllAudio': toggleAllAudio
+        'toggleNarrativeAudio': toggleNarrativeAudio
     }
 }());

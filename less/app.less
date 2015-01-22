@@ -94,6 +94,21 @@ h1,h2,h3,h4,h5,h6,p,ul,ol,li {
           animation-name: shake;
 }
 
+@-webkit-keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+          animation-name: fadeIn;
+}
+
 .primary-navigation {
     .controlArrow {
         position: fixed;

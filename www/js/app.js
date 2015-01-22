@@ -332,7 +332,7 @@ var fadeBgImage = function(slideAnchor) {
 
 
 var onVisibilityChange = function() {
-    // AUDIO.toggleAllAudio();
+    AUDIO.toggleAllAudio();
 }
 
 var getHiddenProperty = function() {

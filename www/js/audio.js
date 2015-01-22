@@ -58,6 +58,36 @@ var AUDIO = (function() {
         });
     }
 
+    var _startNarrativePlayer = function() {
+        $narrativePlayer.jPlayer('setMedia', {
+            mp3: narrativeURL
+        }).jPlayer('play');
+        $controlBtn.removeClass('play').addClass('pause');
+    }
+
+    var _resumeNarrativePlayer = function() {
+        $narrativePlayer.jPlayer('play');
+        $controlBtn.removeClass('play').addClass('pause');
+    }
+
+    var _pauseNarrativePlayer = function(end) {
+        $narrativePlayer.jPlayer('pause');
+
+        clearInterval(progressInterval);
+        if (end) {
+            $playedBar.css('width', $thisPlayerProgress.width() + 'px');
+        }
+        $controlBtn.removeClass('pause').addClass('play');
+    }
+
+    var toggleNarrativeAudio = function() {
+        if ($narrativePlayer.data().jPlayer.status.paused) {
+            _resumeNarrativePlayer();
+        } else {
+            _pauseNarrativePlayer(false);
+        }
+    }
+
     var onNarrativeTimeupdate = function(e) {
         var totalTime = e.jPlayer.status.duration;
         var position = e.jPlayer.status.currentTime;
@@ -91,93 +121,18 @@ var AUDIO = (function() {
         }
     }
 
-    var setUpAmbientPlayer = function(audioFilename, volume) {
-        if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
-            // if (ambientPlayer) {
-            //     if (ambientPlayer._webAudio) {
-            //         ambientPlayer.fade(ambientPlayer.volume(ambientId), 0, 2000);
-            //     } else {
-            //         // ambientPlayer.volume(0, ambientId)
-            //         // ambientPlayer.unload();
-            //     }
-            // }
-
-            $ambientPlayer.jPlayer({
-                swfPath: 'js/lib',
-                loop: true,
-                supplied: 'mp3',
-            });
-
-            // ambientId = ambientPlayer._sounds[0]._id;
-
-            // var fadeVolume = volume ? volume : 1;
-            // if (ambientPlayer._webAudio) {
-            //     ambientPlayer.fade(0, fadeVolume, 4000);
-            // } else {
-            //     ambientPlayer.volume(fadeVolume);
-            //     _onAmbientFaded(ambientId);
-            // }
-        }
+    var setUpAmbientPlayer = function() {
+        $ambientPlayer.jPlayer({
+            swfPath: 'js/lib',
+            loop: true,
+            supplied: 'mp3',
+        });
     }
 
     var setAmbientMedia = function() {
         $ambientPlayer.jPlayer('setMedia', {
             mp3: ambientURL
         }).jPlayer('play');
-    }
-
-    var _onPlay = function() {
-        console.log('play');
-    }
-
-    var _startNarrativePlayer = function() {
-        $narrativePlayer.jPlayer('setMedia', {
-            mp3: narrativeURL
-        }).jPlayer('play');
-        $controlBtn.removeClass('play').addClass('pause');
-    }
-
-    var _resumeNarrativePlayer = function() {
-        $narrativePlayer.jPlayer('play');
-        $controlBtn.removeClass('play').addClass('pause');
-    }
-
-    var _pauseNarrativePlayer = function(end) {
-        $narrativePlayer.jPlayer('pause');
-
-        clearInterval(progressInterval);
-        if (end) {
-            $playedBar.css('width', $thisPlayerProgress.width() + 'px');
-        }
-        $controlBtn.removeClass('pause').addClass('play');
-    }
-
-    var _onAmbientFaded = function(id) {
-        /*
-        * Custom remove a stale Howl object
-        */
-        if (ambientPlayer.volume(null, id) === 0) {
-            for (var i = 0; i < Howler._howls.length; i++) {
-                var sound = Howler._howls[i]._sounds[0];
-                if (sound._id === id) {
-                    Howler._howls.splice(i, 1);
-                }
-            }
-        }
-    }
-
-    var cleanUpAudio = function() {
-        if (narrativePlayer && narrativePlayer.playing()) {
-            narrativePlayer.unload();
-        }
-    }
-
-    var toggleNarrativeAudio = function() {
-        if ($narrativePlayer.data().jPlayer.status.paused) {
-            _resumeNarrativePlayer();
-        } else {
-            _pauseNarrativePlayer(false);
-        }
     }
 
     var toggleAllAudio = function() {
@@ -187,23 +142,17 @@ var AUDIO = (function() {
             _pauseNarrativePlayer();
         }
         if ($ambientPlayer.data().jPlayer.status.paused) {
-            ambientPlayer.jPlayer('play');
+            $ambientPlayer.jPlayer('play');
         } else {
-            ambientPlayer.jPlayer('pause');
+            $ambientPlayer.jPlayer('pause');
         }
-    }
-
-    var playAmbientPlayer = function() {
-        ambientPlayer._sounds[0]._node.play();
     }
 
     return {
         'checkForAudio': checkForAudio,
-        'cleanUpAudio': cleanUpAudio,
         'toggleNarrativeAudio': toggleNarrativeAudio,
         'toggleAllAudio': toggleAllAudio,
         'setUpAmbientPlayer': setUpAmbientPlayer,
         'setUpNarrativePlayer': setUpNarrativePlayer,
-        'playAmbientPlayer': playAmbientPlayer
     }
 }());

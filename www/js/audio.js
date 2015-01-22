@@ -45,8 +45,7 @@ var AUDIO = (function() {
         narrativePlayer = new Howl({
             src: [audioFilename],
             onend: _pauseNarrativePlayer,
-            iOSAutoEnable: false,
-            html5: isTouch ? true : false
+            html5: isTouch
         });
 
         $.getJSON(subFile, function(data) {
@@ -58,7 +57,7 @@ var AUDIO = (function() {
     var _setUpAmbientPlayer = function(audioFilename, volume) {
         if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
             if (ambientPlayer) {
-                ambientPlayer.fade(ambientPlayer.volume(), 0, 2000);
+                ambientPlayer.fade(ambientPlayer.volume(ambientId), 0, 2000);
             }
 
             ambientPlayer = new Howl({
@@ -66,14 +65,12 @@ var AUDIO = (function() {
                 autoplay: true,
                 loop: true,
                 volume: 0,
-                iOSAutoEnable: false,
-                html5: isTouch ? true : false
+                html5: isTouch
             });
             ambientId = ambientPlayer._sounds[0]._id
 
             var fadeVolume = volume ? volume : 1;
             if (ambientPlayer._webAudio) {
-                ambientPlayer.on('faded', _onAmbientFaded);
                 ambientPlayer.fade(0, fadeVolume, 4000);
             } else {
                 ambientPlayer.volume(fadeVolume);
@@ -95,7 +92,6 @@ var AUDIO = (function() {
         clearInterval(progressInterval);
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
-            narrativePlayer.unload();
         }
         $controlBtn.removeClass('pause').addClass('play');
     }

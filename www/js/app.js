@@ -12,6 +12,8 @@ var $playedBar;
 var $subtitleWrapper;
 var $subtitles;
 var $slideTitle;
+var $ambientPlayer;
+var $narrativePlayer;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -227,7 +229,6 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
-    AUDIO.cleanUpAudio();
     ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
 }
 
@@ -265,6 +266,7 @@ var onSlideClick = function(e) {
     if (isTouch) {
         lastSlideExitEvent = 'tap';
         $.fn.fullpage.moveSlideRight();
+        // AUDIO.playAmbientPlayer();
     }
     return true;
 }
@@ -330,7 +332,7 @@ var fadeBgImage = function(slideAnchor) {
 
 
 var onVisibilityChange = function() {
-    AUDIO.toggleAllAudio();
+    // AUDIO.toggleAllAudio();
 }
 
 var getHiddenProperty = function() {
@@ -369,7 +371,8 @@ $(document).ready(function() {
     $upNext = $('.up-next');
     $controlBtn = $('.control-btn');
     arrowTest = determineArrowTest();
-
+    $narrativePlayer = $('#narrative-player');
+    $ambientPlayer = $('#ambient-player');
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
@@ -388,6 +391,8 @@ $(document).ready(function() {
         clippy.on('aftercopy', onClippyCopy);
     });
 
+    AUDIO.setUpNarrativePlayer();
+    AUDIO.setUpAmbientPlayer();
     setUpFullPage();
     resize();
 

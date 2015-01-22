@@ -54,6 +54,9 @@ def _copy_js():
 @static.route('/assets/audio/<string:filename>')
 def audio(filename):
     from flask import Response, request
+
+    print request.headers
+
     path = 'www/assets/audio/%s' % filename
     with open(path) as f:
         headers = Headers()
@@ -63,16 +66,18 @@ def audio(filename):
         status = 200
         size = os.path.getsize(path)
         begin = 0
-        end = size-1
+        end = size - 1
 
         if request.headers.has_key('Range'):
-            status = 206
-            headers.add('Accept-Ranges', 'bytes')
             ranges = findall(r'\d+', request.headers['Range'])
             begin = int(ranges[0])
             if len(ranges) > 1:
                 end = int(ranges[1])
-            headers.add('Content-Range', 'bytes %i-%i/%i' % (begin, end, end-begin) )
+
+            if begin != 0 or end != size - 1:
+                status = 206
+                headers.add('Accept-Ranges', 'bytes')
+                headers.add('Content-Range', 'bytes %i-%i/%i' % (begin, end, end - begin) )
 
         headers.add('Content-Length', str( (end - begin) + 1) )
 
@@ -84,6 +89,7 @@ def audio(filename):
             direct_passthrough = True
         )
 
+        print headers
         return response
 
 # Server arbitrary static files on-demand

@@ -4,20 +4,19 @@ var AUDIO = (function() {
     var ambientId = null;
     var subtitles = null;
     var progressInterval = null;
+    var narrativeURL = null;
+    var subtitlesURL = null;
+    var ambientURL = null;
 
     var checkForAudio = function(slideAnchor) {
         for (var i = 0; i < COPY.content.length; i++) {
             var rowAnchor = COPY.content[i][0];
-            var narrativeFile = COPY.content[i][9];
+            var narrativeFilename = COPY.content[i][9];
             var narrativeSubtitles = COPY.content[i][10];
-            var ambientFile = COPY.content[i][11];
+            var ambientFilename = COPY.content[i][11];
             var ambientVolume = COPY.content[i][12];
 
-            var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + narrativeFile;
-            var subtitlesString = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
-            var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + ambientFile;
-
-            if (rowAnchor === slideAnchor && narrativeFile !== null && !NO_AUDIO) {
+            if (rowAnchor === slideAnchor && narrativeFilename !== null && !NO_AUDIO) {
                 $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
                 $playedBar = $('#slide-' + rowAnchor).find('.player-progress .played');
                 $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
@@ -25,11 +24,17 @@ var AUDIO = (function() {
                 $subtitles = $('#slide-' + rowAnchor).find('.subtitles');
                 $slideTitle = $('#slide-' + rowAnchor).find('.slide-title');
 
-                _setUpNarrativePlayer(narrativeString, subtitlesString);
+                narrativeURL = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + narrativeFilename;
+                subtitlesURL = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
+                setNarrativeMedia();
+            } else {
+                _pauseNarrativePlayer();
             }
 
-            if (rowAnchor === slideAnchor && ambientFile !== null && !NO_AUDIO) {
-                _setUpAmbientPlayer(ambientString, ambientVolume);
+            if (rowAnchor === slideAnchor && ambientFilename !== null && ambientURL !== $ambientPlayer.data().jPlayer.status.src && !NO_AUDIO) {
+                ambientURL = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + ambientFilename;
+                setAmbientMedia();
+
             } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
                 // todo: handle browsers without webaudio
                 ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);
@@ -37,78 +42,25 @@ var AUDIO = (function() {
         }
     }
 
-    var _setUpNarrativePlayer = function(audioFilename, subFile) {
-        if (narrativePlayer) {
-            narrativePlayer.unload();
-        }
-
-        narrativePlayer = new Howl({
-            src: [audioFilename],
-            onend: _pauseNarrativePlayer,
-            html5: isTouch ? true : false
+    var setUpNarrativePlayer = function() {
+        $narrativePlayer.jPlayer({
+            swfPath: 'js/lib',
+            loop: false,
+            supplied: 'mp3',
+            timeupdate: onNarrativeTimeupdate,
         });
+    }
 
-        $.getJSON(subFile, function(data) {
+    var setNarrativeMedia = function() {
+        $.getJSON(subtitlesURL, function(data) {
             subtitles = data.subtitles;
             _startNarrativePlayer();
         });
     }
 
-    var _setUpAmbientPlayer = function(audioFilename, volume) {
-        if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
-            if (ambientPlayer) {
-                if (ambientPlayer._webAudio) {
-                    ambientPlayer.fade(ambientPlayer.volume(ambientId), 0, 2000);
-                } else {
-                    ambientPlayer.volume(0, ambientId)
-                    ambientPlayer.unload();
-                }
-            }
-
-            ambientPlayer = new Howl({
-                src: [audioFilename],
-                autoplay: true,
-                loop: true,
-                volume: 1,
-                html5: true,
-                onplay: _onPlay
-            });
-            ambientId = ambientPlayer._sounds[0]._id;
-
-            var fadeVolume = volume ? volume : 1;
-            if (ambientPlayer._webAudio) {
-                ambientPlayer.fade(0, fadeVolume, 4000);
-            } else {
-                ambientPlayer.volume(fadeVolume);
-                _onAmbientFaded(ambientId);
-            }
-        }
-    }
-
-    var _onPlay = function() {
-        console.log('play');
-    }
-
-    var _startNarrativePlayer = function() {
-        narrativePlayer.play();
-        progressInterval = setInterval(function() {
-            _animateProgress();
-        }, 500);
-        $controlBtn.removeClass('play').addClass('pause');
-    }
-
-    var _pauseNarrativePlayer = function(end) {
-        narrativePlayer.pause();
-        clearInterval(progressInterval);
-        if (end) {
-            $playedBar.css('width', $thisPlayerProgress.width() + 'px');
-        }
-        $controlBtn.removeClass('pause').addClass('play');
-    }
-
-    var _animateProgress = function() {
-        var totalTime = narrativePlayer.duration();
-        var position = narrativePlayer.seek();
+    var onNarrativeTimeupdate = function(e) {
+        var totalTime = e.jPlayer.status.duration;
+        var position = e.jPlayer.status.currentTime;
 
         // animate progress bar
         var percentage = position / totalTime;
@@ -139,6 +91,67 @@ var AUDIO = (function() {
         }
     }
 
+    var setUpAmbientPlayer = function(audioFilename, volume) {
+        if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
+            // if (ambientPlayer) {
+            //     if (ambientPlayer._webAudio) {
+            //         ambientPlayer.fade(ambientPlayer.volume(ambientId), 0, 2000);
+            //     } else {
+            //         // ambientPlayer.volume(0, ambientId)
+            //         // ambientPlayer.unload();
+            //     }
+            // }
+
+            $ambientPlayer.jPlayer({
+                swfPath: 'js/lib',
+                loop: true,
+                supplied: 'mp3',
+            });
+
+            // ambientId = ambientPlayer._sounds[0]._id;
+
+            // var fadeVolume = volume ? volume : 1;
+            // if (ambientPlayer._webAudio) {
+            //     ambientPlayer.fade(0, fadeVolume, 4000);
+            // } else {
+            //     ambientPlayer.volume(fadeVolume);
+            //     _onAmbientFaded(ambientId);
+            // }
+        }
+    }
+
+    var setAmbientMedia = function() {
+        $ambientPlayer.jPlayer('setMedia', {
+            mp3: ambientURL
+        }).jPlayer('play');
+    }
+
+    var _onPlay = function() {
+        console.log('play');
+    }
+
+    var _startNarrativePlayer = function() {
+        $narrativePlayer.jPlayer('setMedia', {
+            mp3: narrativeURL
+        }).jPlayer('play');
+        $controlBtn.removeClass('play').addClass('pause');
+    }
+
+    var _resumeNarrativePlayer = function() {
+        $narrativePlayer.jPlayer('play');
+        $controlBtn.removeClass('play').addClass('pause');
+    }
+
+    var _pauseNarrativePlayer = function(end) {
+        $narrativePlayer.jPlayer('pause');
+
+        clearInterval(progressInterval);
+        if (end) {
+            $playedBar.css('width', $thisPlayerProgress.width() + 'px');
+        }
+        $controlBtn.removeClass('pause').addClass('play');
+    }
+
     var _onAmbientFaded = function(id) {
         /*
         * Custom remove a stale Howl object
@@ -160,34 +173,37 @@ var AUDIO = (function() {
     }
 
     var toggleNarrativeAudio = function() {
-        if (narrativePlayer.playing()) {
-            _pauseNarrativePlayer(false);
+        if ($narrativePlayer.data().jPlayer.status.paused) {
+            _resumeNarrativePlayer();
         } else {
-            _startNarrativePlayer();
+            _pauseNarrativePlayer(false);
         }
     }
 
     var toggleAllAudio = function() {
-        if (narrativePlayer) {
-            if (narrativePlayer.playing()) {
-                _pauseNarrativePlayer(false);
-            } else {
-                _startNarrativePlayer();
-            }
+        if ($narrativePlayer.data().jPlayer.status.paused) {
+            _resumeNarrativePlayer(false);
+        } else {
+            _pauseNarrativePlayer();
         }
-        if (ambientPlayer) {
-            if (ambientPlayer.playing()) {
-                ambientPlayer.pause();
-            } else {
-                ambientPlayer.play();
-            }
+        if ($ambientPlayer.data().jPlayer.status.paused) {
+            ambientPlayer.jPlayer('play');
+        } else {
+            ambientPlayer.jPlayer('pause');
         }
+    }
+
+    var playAmbientPlayer = function() {
+        ambientPlayer._sounds[0]._node.play();
     }
 
     return {
         'checkForAudio': checkForAudio,
         'cleanUpAudio': cleanUpAudio,
         'toggleNarrativeAudio': toggleNarrativeAudio,
-        'toggleAllAudio': toggleAllAudio
+        'toggleAllAudio': toggleAllAudio,
+        'setUpAmbientPlayer': setUpAmbientPlayer,
+        'setUpNarrativePlayer': setUpNarrativePlayer,
+        'playAmbientPlayer': playAmbientPlayer
     }
 }());

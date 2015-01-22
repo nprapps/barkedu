@@ -13,9 +13,9 @@ var AUDIO = (function() {
             var ambientFile = COPY.content[i][11];
             var ambientVolume = COPY.content[i][12];
 
-            var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/' + narrativeFile;
+            var narrativeString = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + narrativeFile;
             var subtitlesString = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
-            var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/' + ambientFile;
+            var ambientString = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + ambientFile;
 
             if (rowAnchor === slideAnchor && narrativeFile !== null && !NO_AUDIO) {
                 $thisPlayerProgress = $('#slide-' + rowAnchor).find('.player-progress');
@@ -45,7 +45,7 @@ var AUDIO = (function() {
         narrativePlayer = new Howl({
             src: [audioFilename],
             onend: _pauseNarrativePlayer,
-            html5: isTouch
+            html5: isTouch ? true : false
         });
 
         $.getJSON(subFile, function(data) {
@@ -57,17 +57,23 @@ var AUDIO = (function() {
     var _setUpAmbientPlayer = function(audioFilename, volume) {
         if (!ambientPlayer || audioFilename !== ambientPlayer._src) {
             if (ambientPlayer) {
-                ambientPlayer.fade(ambientPlayer.volume(ambientId), 0, 2000);
+                if (ambientPlayer._webAudio) {
+                    ambientPlayer.fade(ambientPlayer.volume(ambientId), 0, 2000);
+                } else {
+                    ambientPlayer.volume(0, ambientId)
+                    ambientPlayer.unload();
+                }
             }
 
             ambientPlayer = new Howl({
                 src: [audioFilename],
                 autoplay: true,
                 loop: true,
-                volume: 0,
-                html5: isTouch
+                volume: 1,
+                html5: true,
+                onplay: _onPlay
             });
-            ambientId = ambientPlayer._sounds[0]._id
+            ambientId = ambientPlayer._sounds[0]._id;
 
             var fadeVolume = volume ? volume : 1;
             if (ambientPlayer._webAudio) {
@@ -77,6 +83,10 @@ var AUDIO = (function() {
                 _onAmbientFaded(ambientId);
             }
         }
+    }
+
+    var _onPlay = function() {
+        console.log('play');
     }
 
     var _startNarrativePlayer = function() {

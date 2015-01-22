@@ -3,9 +3,12 @@
 import json
 from mimetypes import guess_type
 import os
+from re import findall
 import subprocess
 
+
 from flask import abort, make_response
+from werkzeug.datastructures import Headers
 
 import app_config
 import copytext
@@ -45,6 +48,43 @@ def _copy_js():
     copy = 'window.COPY = ' + copytext.Copy(app_config.COPY_PATH).json()
 
     return make_response(copy, 200, { 'Content-Type': 'application/javascript' })
+
+
+# Audio route to serve range headers for Safari.
+@static.route('/assets/audio/<string:filename>')
+def audio(filename):
+    from flask import Response, request
+    path = 'www/assets/audio/%s' % filename
+    with open(path) as f:
+        headers = Headers()
+        headers.add('Content-Disposition', 'attachment', filename=filename)
+        headers.add('Content-Transfer-Encoding','binary')
+
+        status = 200
+        size = os.path.getsize(path)
+        begin = 0
+        end = size-1
+
+        if request.headers.has_key('Range'):
+            status = 206
+            headers.add('Accept-Ranges', 'bytes')
+            ranges = findall(r'\d+', request.headers['Range'])
+            begin = int(ranges[0])
+            if len(ranges) > 1:
+                end = int(ranges[1])
+            headers.add('Content-Range', 'bytes %i-%i/%i' % (begin, end, end-begin) )
+
+        headers.add('Content-Length', str( (end - begin) + 1) )
+
+        response = Response(
+            file(path),
+            status = status,
+            mimetype = 'application/octet-stream',
+            headers = headers,
+            direct_passthrough = True
+        )
+
+        return response
 
 # Server arbitrary static files on-demand
 @static.route('/<path:path>')

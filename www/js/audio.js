@@ -115,7 +115,11 @@ var AUDIO = (function() {
             $slideTitle.hide();
             for (var i = 0; i < subtitles.length; i++) {
                 if (position < subtitles[i]['time']) {
-                    activeSubtitle = subtitles[i - 1]['transcript'];
+                    if (i > 0) {
+                        activeSubtitle = subtitles[i - 1]['transcript'];
+                    } else {
+                        activeSubtitle = subtitles[i]['transcript'];
+                    }
                     $subtitleWrapper.fadeIn();
                     $subtitles.text(activeSubtitle);
                     break;

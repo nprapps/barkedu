@@ -28,6 +28,7 @@ var lastSlideExitEvent;
 var firstRightArrowClicked = false;
 var hammer;
 var NO_AUDIO = (window.location.search.indexOf('noaudio') >= 0);
+var visibilityProperty = null;
 
 var resize = function() {
     $w = $(window).width();
@@ -352,7 +353,7 @@ var getHiddenProperty = function() {
 }
 
 var isHidden = function() {
-    var prop = getHiddenProp();
+    var prop = getHiddenProperty();
     if (!prop) return false;
 
     return document[prop];
@@ -401,7 +402,7 @@ $(document).ready(function() {
     $(window).resize(resize);
 
     // listen for page visibility changes
-    var visibilityProperty = getHiddenProperty();
+    visibilityProperty = getHiddenProperty();
     if (visibilityProperty) {
         var evtname = visibilityProperty.replace(/[H|h]idden/,'') + 'visibilitychange';
         document.addEventListener(evtname, onVisibilityChange);

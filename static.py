@@ -55,8 +55,6 @@ def _copy_js():
 def audio(filename):
     from flask import Response, request
 
-    print request.headers
-
     path = 'www/assets/audio/%s' % filename
     with open(path) as f:
         headers = Headers()
@@ -89,7 +87,6 @@ def audio(filename):
             direct_passthrough = True
         )
 
-        print headers
         return response
 
 # Server arbitrary static files on-demand

@@ -1,23 +1,27 @@
-.narrative-audio{
-    .full-block .full-block-cell {
-        vertical-align: bottom;
+.slide.narrative-audio {
+    
+    .full-block {
+        background: linear-gradient(to bottom,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.6));
     }
+    
+    
 }
 
 .narrative-player {
     position: absolute;
-    bottom: 0;
-    left: 0;
+        bottom: 70px;
+        right: 0;
     width: 100%;
     min-height: 150px;
-    margin: 0;
-    background-color: @caption-screen-dark;
-    padding: 20px;
     overflow: hidden;
+    
+    
 
     .slide-title, .subtitle-wrapper {
         margin: 0 0 0 20px;
     }
+    
+    
 
     .slide-title {
         h2 {
@@ -27,16 +31,33 @@
 
     .subtitle-wrapper {
         display: none;
+        
+        
         p {
-            font-size: 16px;
-            line-height: 24px;
+            font-size: 20px;
+            line-height: 1.6;
+            margin: 15px auto;
+            text-align: center;
+            font-family: georgia;
+            font-size: @small-type;
+            opacity: .8;
+             max-width: 600px;
+            text-shadow: 2px 2px 5px #111;
+            @media @screen-small-above {
+                font-size: 24px;
+            }
+            @media @screen-mega-above {
+                font-size: 20px;
+            }
         }
     }
 
     .controls {
         position: absolute;
         bottom: 20px;
-        width: 95%;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
         .control-btn, .progress {
             position: relative;
             display: inline-block;

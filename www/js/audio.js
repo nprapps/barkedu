@@ -31,9 +31,9 @@ var AUDIO = (function() {
                 _pauseNarrativePlayer();
             }
 
-            if (rowAnchor === slideAnchor && ambientFilename !== null && ambientURL !== $ambientPlayer.data().jPlayer.status.src && !NO_AUDIO) {
+            if (rowAnchor === slideAnchor && ambientFilename !== null && !NO_AUDIO) {
                 ambientURL = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + ambientFilename;
-                setAmbientMedia();
+                setAmbientMedia(ambientURL);
 
             } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
                 // todo: handle browsers without webaudio
@@ -88,6 +88,12 @@ var AUDIO = (function() {
         }
     }
 
+    var fakeNarrativePlayer = function() {
+        $narrativePlayer.jPlayer('setMedia', {
+            mp3: APP_CONFIG.S3_BASE_URL + '/assets/audio/' + 'drone-test.mp3'
+        }).jPlayer('play').jPlayer('pause');
+    }
+
     var onNarrativeTimeupdate = function(e) {
         var totalTime = e.jPlayer.status.duration;
         var position = e.jPlayer.status.currentTime;
@@ -95,28 +101,30 @@ var AUDIO = (function() {
         // animate progress bar
         var percentage = position / totalTime;
 
-        // if we're resetting the bar. ugh.
-        if ($playedBar.width() == $thisPlayerProgress.width()) {
-            $playedBar.addClass('no-transition');
-            $playedBar.css('width', 0);
-        } else {
-            $playedBar.removeClass('no-transition');
-            $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
-        }
-        // animate subtitles
-        var activeSubtitle = null;
-        $slideTitle.hide();
-        for (var i = 0; i < subtitles.length; i++) {
-            if (position < subtitles[i]['time']) {
-                activeSubtitle = subtitles[i - 1]['transcript'];
-                $subtitleWrapper.fadeIn();
-                $subtitles.text(activeSubtitle);
-                break;
+        if (subtitles) {
+            // if we're resetting the bar. ugh.
+            if ($playedBar.width() == $thisPlayerProgress.width()) {
+                $playedBar.addClass('no-transition');
+                $playedBar.css('width', 0);
             } else {
-                // this is the last one
-                $subtitleWrapper.fadeIn();
-                activeSubtitle = subtitles[i]['transcript'];
-                $subtitles.text(activeSubtitle);
+                $playedBar.removeClass('no-transition');
+                $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
+            }
+            // animate subtitles
+            var activeSubtitle = null;
+            $slideTitle.hide();
+            for (var i = 0; i < subtitles.length; i++) {
+                if (position < subtitles[i]['time']) {
+                    activeSubtitle = subtitles[i - 1]['transcript'];
+                    $subtitleWrapper.fadeIn();
+                    $subtitles.text(activeSubtitle);
+                    break;
+                } else {
+                    // this is the last one
+                    $subtitleWrapper.fadeIn();
+                    activeSubtitle = subtitles[i]['transcript'];
+                    $subtitles.text(activeSubtitle);
+                }
             }
         }
     }
@@ -129,9 +137,10 @@ var AUDIO = (function() {
         });
     }
 
-    var setAmbientMedia = function() {
+    var setAmbientMedia = function(url) {
+        console.log(url);
         $ambientPlayer.jPlayer('setMedia', {
-            mp3: ambientURL
+            mp3: url
         }).jPlayer('play');
     }
 
@@ -152,5 +161,7 @@ var AUDIO = (function() {
         'toggleAllAudio': toggleAllAudio,
         'setUpAmbientPlayer': setUpAmbientPlayer,
         'setUpNarrativePlayer': setUpNarrativePlayer,
+        'setAmbientMedia': setAmbientMedia,
+        'fakeNarrativePlayer': fakeNarrativePlayer
     }
 }());

@@ -243,6 +243,10 @@ var onFirstRightArrowClick = function() {
 var onStartCardButtonClick = function() {
     lastSlideExitEvent = 'go';
     $.fn.fullpage.moveSlideRight();
+    if (isTouch) {
+        AUDIO.setAmbientMedia(APP_CONFIG.S3_BASE_URL + '/assets/audio/drone-test.mp3');
+        AUDIO.fakeNarrativePlayer();
+    }
 }
 
 var onArrowsClick = function() {
@@ -267,7 +271,11 @@ var onSlideClick = function(e) {
     if (isTouch) {
         lastSlideExitEvent = 'tap';
         $.fn.fullpage.moveSlideRight();
-        // AUDIO.playAmbientPlayer();
+
+        if ($slides.first().hasClass('active')) {
+            AUDIO.setAmbientMedia(APP_CONFIG.S3_BASE_URL + '/assets/audio/drone-test.mp3');
+            AUDIO.fakeNarrativePlayer();
+        };
     }
     return true;
 }
@@ -374,6 +382,7 @@ $(document).ready(function() {
     arrowTest = determineArrowTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
+
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);

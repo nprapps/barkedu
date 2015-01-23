@@ -136,15 +136,13 @@ var AUDIO = (function() {
     }
 
     var toggleAllAudio = function() {
-        if ($narrativePlayer.data().jPlayer.status.paused) {
-            _resumeNarrativePlayer(false);
-        } else {
-            _pauseNarrativePlayer();
-        }
-        if ($ambientPlayer.data().jPlayer.status.paused) {
-            $ambientPlayer.jPlayer('play');
-        } else {
+        if (isHidden()) {
+            _pauseNarrativePlayer(false);
             $ambientPlayer.jPlayer('pause');
+
+        } else {
+            _resumeNarrativePlayer();
+            $ambientPlayer.jPlayer('play');
         }
     }
 

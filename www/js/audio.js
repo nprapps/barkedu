@@ -138,10 +138,21 @@ var AUDIO = (function() {
     }
 
     var setAmbientMedia = function(url) {
-        console.log(url);
-        $ambientPlayer.jPlayer('setMedia', {
-            mp3: url
-        }).jPlayer('play');
+        if (!$ambientPlayer.data().jPlayer.status.paused) {
+            $ambientPlayer.jPlayerFade().to(1000, 1, 0, function() {
+                $ambientPlayer.jPlayer('setMedia', {
+                    mp3: url
+                }).jPlayer('play');
+
+                $ambientPlayer.jPlayerFade().to(1000, 0, 1);
+
+            });
+        } else {
+            $ambientPlayer.jPlayer('setMedia', {
+                mp3: url
+            }).jPlayer('play');
+            $ambientPlayer.jPlayerFade().to(1000, 0, 1);
+        }
     }
 
     var toggleAllAudio = function() {

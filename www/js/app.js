@@ -143,7 +143,7 @@ var loadImages = function($slide) {
         var image_path = 'assets/' + image_filename + mobileSuffix + image_extension;
 
         if ($slide.css('background-image') === 'none') {
-            $slide.css('background-image', 'linear-gradient(to bottom,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.6)), url(' + image_path + ')');
+            $slide.css('background-image', 'url(' + image_path + ')');
         }
     }
 

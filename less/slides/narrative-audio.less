@@ -54,34 +54,52 @@
 
     .controls {
         position: absolute;
-        bottom: 20px;
+        left: 0;
+        bottom: 10px;
         width: 100%;
-        .control-btn, .progress {
+        
+        .control-group {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
             position: relative;
-            display: inline-block;
         }
 
         .control-btn {
-            float: left;
+            width: 35px;
+            height: 35px;
+            background-color: #fff;
+            display: block;
+            color: #000;
+            text-decoration: none;
+            
+            &.play{
+                 padding: 6px 0 0 13px;
+            }
+            
+            &.pause{
+                 padding: 6px 0 0 11px;
+            }
 
             &.pause:before {
                 font-family: "FontAwesome";
                 content: "\f04c";
-                font-size: 16px;
+                font-size: 14px;
             }
             &.play:before {
                 font-family: "FontAwesome";
                 content: "\f04b";
-                font-size: 16px;
+                font-size: 14px;
             }
         }
 
         .player-progress {
-            position: relative;
+            position: absolute;
+            bottom: 15px;
+            right: 0;
             height: 2px;
-            width: 95%;
-            max-width: 600px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 520px;
 
             .total, .played {
                 position: absolute;
@@ -90,13 +108,13 @@
             }
 
             .total {
-                background-color: white;
+                background-color: #fff;
                 width: 100%;
                 height: 100%;
                 z-index: 0;
             }
             .played {
-                background-color: #999;
+                background-color: #ccc;
                 width: 0;
                 height: 100%;
                 z-index: 1;

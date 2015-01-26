@@ -161,6 +161,9 @@ var loadImages = function($slide) {
 var checkForVideo = function(slideAnchor) {
     var $video = $('#slide-' + slideAnchor).find('video');
     if ($video.length > 0) {
+        var sources = $video.find('source');
+        sources.attr('src', sources.data('src'));
+        $video.get(0).load();
         $video.get(0).play();
         $video.get(0).loop = true;
     }

@@ -109,6 +109,10 @@ var AUDIO = (function() {
             } else {
                 $playedBar.removeClass('no-transition');
                 $playedBar.css('width', $thisPlayerProgress.width() * percentage + 'px');
+
+                if (percentage === 1) {
+                    $controlBtn.removeClass('pause').addClass('play');
+                }
             }
             // animate subtitles
             var activeSubtitle = null;

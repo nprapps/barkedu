@@ -9,16 +9,16 @@
 
 .narrative-player {
     position: absolute;
-        bottom: 70px;
-        right: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
     min-height: 150px;
     overflow: hidden;
-    
-    
-
-    .slide-title, .subtitle-wrapper {
-        margin: 0 0 0 20px;
+    @media @screen-tiny-above {
+       bottom: 30px; 
+    }
+    @media @screen-small-above {
+       bottom: 70px; 
     }
     
     
@@ -34,17 +34,17 @@
         
         
         p {
-            font-size: 20px;
+            font-size: 18px;
             line-height: 1.6;
             margin: 15px auto;
             text-align: center;
             font-family: georgia;
-            font-size: @small-type;
             opacity: .8;
-             max-width: 600px;
+             max-width: 450px;
             text-shadow: 2px 2px 5px #111;
             @media @screen-small-above {
                 font-size: 24px;
+                max-width: 600px;
             }
             @media @screen-mega-above {
                 font-size: 24px;
@@ -55,17 +55,22 @@
     .controls {
         position: absolute;
         left: 0;
-        bottom: 10px;
+        bottom: 0;
         width: 100%;
         
         .control-group {
             width: 100%;
-            max-width: 600px;
+            max-width: 470px;
             margin: 0 auto;
             position: relative;
+            @media @screen-small-above {
+                max-width: 600px;
+            }
         }
 
         .control-btn {
+            position: relative;
+            z-index: 2;
             width: 35px;
             height: 35px;
             background-color: #fff;
@@ -78,7 +83,7 @@
             }
             
             &.pause{
-                 padding: 6px 0 0 11px;
+                 padding: 6px 0 0 12px;
             }
 
             &.pause:before {
@@ -94,12 +99,17 @@
         }
 
         .player-progress {
-            position: absolute;
-            bottom: 15px;
-            right: 0;
-            height: 4px;
             width: 100%;
-            max-width: 530px;
+            @media @screen-tiny-above {
+                position: absolute;
+                bottom: 15px;
+                left: 50px;
+                height: 4px;
+                max-width: 420px;
+            }
+            @media @screen-small-above {
+                max-width: 530px;
+            }
 
             .total, .played {
                 position: absolute;

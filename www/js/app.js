@@ -166,6 +166,7 @@ var checkForVideo = function(slideAnchor) {
             sources.attr('src', sources.data('src'));
             $video.get(0).load();
         }
+        $video.get(0).pause();
         $video.get(0).currentTime = 0;
         $video.get(0).play();
     }

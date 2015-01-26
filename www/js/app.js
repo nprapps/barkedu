@@ -82,6 +82,7 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     setSlidesForLazyLoading(slideIndex);
     showNavigation();
     AUDIO.checkForAudio(slideAnchor);
+    checkForVideo(slideAnchor);
 
     if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
         fadeBgImage(slideAnchor);
@@ -156,6 +157,14 @@ var loadImages = function($slide) {
         }
     }
 };
+
+var checkForVideo = function(slideAnchor) {
+    var $video = $('#slide-' + slideAnchor).find('video');
+    if ($video.length > 0) {
+        $video.get(0).play();
+        $video.get(0).loop = true;
+    }
+}
 
 var showNavigation = function() {
     /*

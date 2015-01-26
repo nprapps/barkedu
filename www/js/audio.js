@@ -171,7 +171,7 @@ var AUDIO = (function() {
 
     var fakeAmbientPlayer = function() {
         $ambientPlayer.jPlayer('setMedia', {
-            mp3: APP_CONFIG.S3_BASE_URL + '/assets/audio/' + 'drone-test.mp3'
+            mp3: APP_CONFIG.S3_BASE_URL + '/assets/audio/' + 'doctor_ambient.mp3'
         }).jPlayer('pause');
     }
 

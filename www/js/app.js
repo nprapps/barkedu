@@ -26,7 +26,7 @@ var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
 var firstRightArrowClicked = false;
-var hammer;
+// var hammer;
 var NO_AUDIO = (window.location.search.indexOf('noaudio') >= 0);
 var visibilityProperty = null;
 
@@ -402,9 +402,9 @@ $(document).ready(function() {
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
     $arrows.on('click', onArrowsClick);
-    hammer = new Hammer(document.body);
-    hammer.on('swipeleft', onSwipeLeft);
-    hammer.on('swiperight', onSwipeRight);
+    // hammer = new Hammer(document.body);
+    // hammer.on('swipeleft', onSwipeLeft);
+    // hammer.on('swiperight', onSwipeRight);
     $controlBtn.on('click', onControlBtnClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);

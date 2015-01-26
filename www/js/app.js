@@ -160,7 +160,7 @@ var loadImages = function($slide) {
 
 var checkForVideo = function(slideAnchor) {
     var $video = $('#slide-' + slideAnchor).find('video');
-    if ($video.length > 0) {
+    if ($video.length > 0 && !isTouch) {
         var sources = $video.find('source');
         var video = $video.get(0);
 

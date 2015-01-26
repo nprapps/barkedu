@@ -260,7 +260,7 @@ var onStartCardButtonClick = function() {
     lastSlideExitEvent = 'go';
     $.fn.fullpage.moveSlideRight();
     if (isTouch) {
-        AUDIO.setAmbientMedia(APP_CONFIG.S3_BASE_URL + '/assets/audio/drone-test.mp3');
+        AUDIO.fakeAmbientPlayer();
         AUDIO.fakeNarrativePlayer();
     }
 }

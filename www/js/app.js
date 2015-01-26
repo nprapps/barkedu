@@ -162,13 +162,16 @@ var checkForVideo = function(slideAnchor) {
     var $video = $('#slide-' + slideAnchor).find('video');
     if ($video.length > 0) {
         var sources = $video.find('source');
+        var video = $video.get(0);
+
         if (!sources.attr('src')) {
             sources.attr('src', sources.data('src'));
-            $video.get(0).load();
+            video.load();
         }
-        $video.get(0).pause();
-        $video.get(0).currentTime = 0;
-        $video.get(0).play();
+        video.play();
+        $(video).on('ended', function() {
+            video.currentTime = 0;
+        });
     }
 }
 

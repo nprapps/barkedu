@@ -170,7 +170,6 @@ var AUDIO = (function() {
     }
 
     var toggleAllAudio = function() {
-        console.log(narrativeVisible);
         if (isHidden()) {
             if (narrativeVisible) {
                 _pauseNarrativePlayer(false);

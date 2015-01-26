@@ -12,10 +12,11 @@
     bottom: 0;
     right: 0;
     width: 100%;
-    min-height: 150px;
+    min-height: 100px;
     overflow: hidden;
     @media @screen-tiny-above {
        bottom: 30px; 
+       min-height: 150px;
     }
     @media @screen-small-above {
        bottom: 70px; 
@@ -37,7 +38,7 @@
         }
         
         p {
-            font-size: 18px;
+            font-size: @small-type;
             line-height: 1.6;
             margin: 15px auto;
             text-align: center;

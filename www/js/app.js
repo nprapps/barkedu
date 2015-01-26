@@ -286,12 +286,11 @@ var onDocumentKeyDown = function(e) {
 var onSlideClick = function(e) {
     if (isTouch) {
         lastSlideExitEvent = 'tap';
-        $.fn.fullpage.moveSlideRight();
-
         if ($slides.first().hasClass('active')) {
-            AUDIO.setAmbientMedia(APP_CONFIG.S3_BASE_URL + '/assets/audio/drone-test.mp3');
+            AUDIO.fakeAmbientPlayer();
             AUDIO.fakeNarrativePlayer();
-        };
+        }
+        $.fn.fullpage.moveSlideRight();
     }
     return true;
 }

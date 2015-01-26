@@ -161,8 +161,14 @@ var loadImages = function($slide) {
 var checkForVideo = function(slideAnchor) {
     var $video = $('#slide-' + slideAnchor).find('video');
     if ($video.length > 0) {
+        var sources = $video.find('source');
+        if (!sources.attr('src')) {
+            sources.attr('src', sources.data('src'));
+            $video.get(0).load();
+        }
+        $video.get(0).pause();
+        $video.get(0).currentTime = 0;
         $video.get(0).play();
-        $video.get(0).loop = true;
     }
 }
 
@@ -239,6 +245,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
+    AUDIO.checkNarrativeState();
     ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
 }
 

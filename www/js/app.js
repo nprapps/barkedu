@@ -169,9 +169,6 @@ var checkForVideo = function(slideAnchor) {
             video.load();
         }
         video.play();
-        $(video).on('ended', function() {
-            video.currentTime = 0;
-        });
     }
 }
 

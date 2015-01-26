@@ -4,26 +4,37 @@
     }
 
     .bleed-box {
+        //padding: 10px 20px 30px 20px;
+        //background: @caption-screen-dark;
         position: absolute;
-        bottom: 70px;
+        bottom: 10px;
         right: 0;
         width: 100%;
-    }
-    p {
-        font-size: 20px;
-        line-height: 1.6;
-        margin: 15px auto;
-        text-align: justify;
-        font-family: georgia;
-        font-size: @small-type;
-        opacity: .8;
-        max-width: 600px;
-        text-shadow: 2px 2px 5px #111;
-        @media @screen-small-above {
-          font-size: 24px;
+        padding: 0 15px;
+        z-index: 2;
+        @media @screen-tiny-above {
+            bottom: 30px;
+
         }
-        @media @screen-mega-above {
-          font-size: 24px;
+        @media @screen-small-above {
+           bottom: 70px;
+        }
+
+        p {
+            font-size: @small-type;
+            line-height: 1.6;
+            margin: 15px auto;
+            text-align: justify;
+            font-family: georgia;
+            opacity: .8;
+            max-width: 600px;
+            text-shadow: 2px 2px 5px #111;
+            @media @screen-small-above {
+                font-size: 24px;
+            }
+            @media @screen-mega-above {
+                font-size: 24px;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ var AUDIO = (function() {
     var narrativeURL = null;
     var subtitlesURL = null;
     var ambientURL = null;
+    var narrativeVisibile = false;
 
     var checkForAudio = function(slideAnchor) {
         for (var i = 0; i < COPY.content.length; i++) {
@@ -63,6 +64,7 @@ var AUDIO = (function() {
             mp3: narrativeURL
         }).jPlayer('play');
         $controlBtn.removeClass('play').addClass('pause');
+        narrativeVisible = true;
     }
 
     var _resumeNarrativePlayer = function() {
@@ -92,6 +94,10 @@ var AUDIO = (function() {
         $narrativePlayer.jPlayer('setMedia', {
             mp3: APP_CONFIG.S3_BASE_URL + '/assets/audio/' + 'drone-test.mp3'
         }).jPlayer('play').jPlayer('pause');
+    }
+
+    var checkNarrativeState = function(anchor) {
+        narrativeVisible = false;
     }
 
     var onNarrativeTimeupdate = function(e) {
@@ -164,12 +170,17 @@ var AUDIO = (function() {
     }
 
     var toggleAllAudio = function() {
+        console.log(narrativeVisible);
         if (isHidden()) {
-            _pauseNarrativePlayer(false);
+            if (narrativeVisible) {
+                _pauseNarrativePlayer(false);
+            }
             $ambientPlayer.jPlayer('pause');
 
         } else {
-            _resumeNarrativePlayer();
+            if (narrativeVisible) {
+                _resumeNarrativePlayer();
+            }
             $ambientPlayer.jPlayer('play');
         }
     }
@@ -181,6 +192,7 @@ var AUDIO = (function() {
         'setUpAmbientPlayer': setUpAmbientPlayer,
         'setUpNarrativePlayer': setUpNarrativePlayer,
         'setAmbientMedia': setAmbientMedia,
-        'fakeNarrativePlayer': fakeNarrativePlayer
+        'fakeNarrativePlayer': fakeNarrativePlayer,
+        'checkNarrativeState': checkNarrativeState
     }
 }());

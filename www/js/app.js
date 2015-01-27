@@ -14,8 +14,6 @@ var $subtitles;
 var $slideTitle;
 var $ambientPlayer;
 var $narrativePlayer;
-var $progressIndicator;
-var $currentProgress;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -60,7 +58,7 @@ var setUpFullPage = function() {
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
-        fixedElements: '.primary-navigation, #share-modal, .progress-indicator',
+        fixedElements: '.primary-navigation, #share-modal',
         resize: false,
         css3: true,
         loopHorizontal: false,
@@ -85,7 +83,6 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     showNavigation();
     AUDIO.checkForAudio(slideAnchor);
     checkForVideo(slideAnchor);
-    animateProgress(slideIndex);
 
     if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
         fadeBgImage(slideAnchor);
@@ -244,12 +241,6 @@ var getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var animateProgress = function(index) {
-    var totalSlides = $slides.length;
-    var percentage = (index + 1) / totalSlides;
-    $currentProgress.css('width', $progressIndicator.width() * percentage);
-}
-
 var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
@@ -406,8 +397,6 @@ $(document).ready(function() {
     arrowTest = determineArrowTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
-    $progressIndicator = $('.progress-indicator');
-    $currentProgress = $('.current-progress');
 
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);

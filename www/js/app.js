@@ -14,6 +14,9 @@ var $subtitles;
 var $slideTitle;
 var $ambientPlayer;
 var $narrativePlayer;
+var $progress;
+var $currentSlideNumber;
+var $totalSlides;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -58,7 +61,7 @@ var setUpFullPage = function() {
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
-        fixedElements: '.primary-navigation, #share-modal',
+        fixedElements: '.primary-navigation, #share-modal, .progress-numbers',
         resize: false,
         css3: true,
         loopHorizontal: false,
@@ -83,6 +86,7 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     showNavigation();
     AUDIO.checkForAudio(slideAnchor);
     checkForVideo(slideAnchor);
+    updateProgress(slideIndex);
 
     if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
         fadeBgImage(slideAnchor);
@@ -241,6 +245,20 @@ var getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+var updateProgress = function(index) {
+    if (index === 0) {
+        $progress.hide();
+    } else {
+        $progress.show();
+    }
+
+    var page = index + 1;
+    var totalSlides = $slides.length;
+
+    $currentSlideNumber.text(page);
+    $totalSlides.text(totalSlides);
+}
+
 var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
@@ -397,6 +415,9 @@ $(document).ready(function() {
     arrowTest = determineArrowTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
+    $progress = $('.progress-numbers');
+    $currentSlideNumber = $('.current-number');
+    $totalSlides = $('.total-slides')
 
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);

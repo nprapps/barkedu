@@ -428,11 +428,12 @@ img {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 10px;
+    height: 5px;
 
     .current-progress {
         background-color: @look-pink;
         height: 100%;
-        .transition(width 0.5s ease);
+        .transition(width 0.5s ease-out);
+        width: 0;
     }
 }

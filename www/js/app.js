@@ -47,6 +47,7 @@ var resize = function() {
         w = optimalWidth;
         h = $h;
     }
+
 };
 
 var setUpFullPage = function() {
@@ -240,6 +241,17 @@ var determineArrowTest = function() {
 
 var getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+var animateProgress = function(index) {
+    if (index === 0) {
+        $progressIndicator.hide();
+    } else {
+        $progressIndicator.show();
+    }
+    var totalSlides = $slides.length;
+    var percentage = (index + 1) / totalSlides;
+    $currentProgress.css('width', percentage * 100 + '%');
 }
 
 var onSlideLeave = function(anchorLink, index, slideIndex, direction) {

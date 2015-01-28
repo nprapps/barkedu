@@ -423,3 +423,58 @@ img {
     }
 
 }
+
+.share {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    padding: 15px 10px 0 0;
+    z-index: 100;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: .8;
+    text-shadow: 2px 2px 2px #000;
+    text-align: right;
+
+    @media @screen-small-above {
+        right:20px;
+    }
+
+
+    b {
+        opacity: 0;
+        .transition(opacity 1s ease);
+    }
+
+    i {
+        font-size: 16px;
+        padding-left: 3px;
+    }
+
+    &:hover {
+       color: #fff;
+       text-decoration: none;
+
+       b  {
+        opacity: 1;
+       }
+    }
+
+    .touch & {
+        b {display: none;}
+    }
+
+    .titlecard-nav & {
+        display: none;
+    }
+
+    .final-slide & {
+        display: none;
+    }
+}

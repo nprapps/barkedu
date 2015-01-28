@@ -58,7 +58,7 @@ var setUpFullPage = function() {
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
-        fixedElements: '.primary-navigation, #share-modal',
+        fixedElements: '.primary-navigation, #share-modal, .share',
         resize: false,
         css3: true,
         loopHorizontal: false,

@@ -338,6 +338,7 @@ var rmFakeMobileHover = function() {
  * Text copied to clipboard.
  */
 var onClippyCopy = function(e) {
+    console.log(e);
     alert('Copied to your clipboard!');
 
     ANALYTICS.copySummary();
@@ -444,12 +445,6 @@ $(document).ready(function() {
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);
     $(document).keydown(onDocumentKeyDown);
-
-    ZeroClipboard.config({ swfPath: 'js/lib/ZeroClipboard.swf' });
-    var clippy = new ZeroClipboard($(".clippy"));
-    clippy.on('ready', function(readyEvent) {
-        clippy.on('aftercopy', onClippyCopy);
-    });
 
     AUDIO.setUpNarrativePlayer();
     AUDIO.setUpAmbientPlayer();

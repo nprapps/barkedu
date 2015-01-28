@@ -14,6 +14,7 @@ var $subtitles;
 var $slideTitle;
 var $ambientPlayer;
 var $narrativePlayer;
+var $shareModal;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -383,6 +384,21 @@ var isHidden = function() {
 }
 
 
+/*
+ * Share modal opened.
+ */
+var onShareModalShown = function(e) {
+    ANALYTICS.openShareDiscuss();
+}
+
+/*
+ * Share modal closed.
+ */
+var onShareModalHidden = function(e) {
+    ANALYTICS.closeShareDiscuss();
+}
+
+
 $(document).ready(function() {
     $w = $(window).width();
     $h = $(window).height();
@@ -397,8 +413,10 @@ $(document).ready(function() {
     arrowTest = determineArrowTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
+    $shareModal = $('#share-modal')
 
-    $startCardButton.on('click', onStartCardButtonClick);
+    $shareModal.on('shown.bs.modal', onShareModalShown);
+    $shareModal.on('hidden.bs.modal', onShareModalHidden);
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
     $arrows.on('click', onArrowsClick);

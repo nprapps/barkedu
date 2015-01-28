@@ -7,7 +7,7 @@ var AUDIO = (function() {
     var narrativeURL = null;
     var subtitlesURL = null;
     var ambientURL = null;
-    var narrativeVisibile = false;
+    var narrativeVisible = false;
 
     var checkForAudio = function(slideAnchor) {
         for (var i = 0; i < COPY.content.length; i++) {

@@ -14,6 +14,7 @@ var $subtitles;
 var $slideTitle;
 var $ambientPlayer;
 var $narrativePlayer;
+var $share;
 var $shareModal;
 var $progressIndicator
 var $currentProgress;
@@ -91,6 +92,12 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
 
     if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
         fadeBgImage(slideAnchor);
+    }
+
+    if (slideIndex === 0 || slideIndex === $slides.length - 1) {
+        $share.hide();
+    } else {
+        $share.show();
     }
 
     // Completion tracking
@@ -428,6 +435,7 @@ $(document).ready(function() {
     arrowTest = determineArrowTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
+    $share = $('.share');
     $shareModal = $('#share-modal')
     $progressIndicator = $('.progress-indicator');
     $currentProgress = $('.current-progress')

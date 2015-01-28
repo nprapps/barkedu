@@ -417,6 +417,7 @@ $(document).ready(function() {
 
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);
+    $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
     $arrows.on('click', onArrowsClick);

@@ -247,14 +247,13 @@ var getRandomInt = function(min, max) {
 }
 
 var animateProgress = function(index) {
-    if (index === 0) {
-        $progressIndicator.hide();
-    } else {
-        $progressIndicator.show();
-    }
     var totalSlides = $slides.length;
     var percentage = (index + 1) / totalSlides;
     $currentProgress.css('width', percentage * 100 + '%');
+
+    if (index === 0) {
+        $currentProgress.width(0);
+    }
 }
 
 var onSlideLeave = function(anchorLink, index, slideIndex, direction) {

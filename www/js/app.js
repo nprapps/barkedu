@@ -15,6 +15,8 @@ var $slideTitle;
 var $ambientPlayer;
 var $narrativePlayer;
 var $shareModal;
+var $progressIndicator
+var $currentProgress;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -60,7 +62,7 @@ var setUpFullPage = function() {
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
-        fixedElements: '.primary-navigation, #share-modal, .share',
+        fixedElements: '.primary-navigation, #share-modal, .share, .progress-indicator',
         resize: false,
         css3: true,
         loopHorizontal: false,
@@ -85,6 +87,7 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     showNavigation();
     AUDIO.checkForAudio(slideAnchor);
     checkForVideo(slideAnchor);
+    animateProgress(slideIndex);
 
     if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
         fadeBgImage(slideAnchor);
@@ -426,6 +429,8 @@ $(document).ready(function() {
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
     $shareModal = $('#share-modal')
+    $progressIndicator = $('.progress-indicator');
+    $currentProgress = $('.current-progress')
 
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);

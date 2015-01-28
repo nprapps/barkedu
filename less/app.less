@@ -427,7 +427,6 @@ img {
 .share {
     position: absolute;
     top: 0;
-<<<<<<< HEAD
     right: 0;
     width: 80px;
     height: 80px;
@@ -442,10 +441,6 @@ img {
     opacity: .8;
     text-shadow: 2px 2px 2px #000;
     text-align: right;
-=======
-    width: 100%;
-    height: 5px;
->>>>>>> progress-bar
 
     @media @screen-small-above {
         right:20px;
@@ -481,5 +476,19 @@ img {
 
     .final-slide & {
         display: none;
+    }
+}
+
+.progress-indicator {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 5px;
+
+    .current-progress {
+        background-color: @look-pink;
+        height: 100%;
+        .transition(width 0.5s ease-out);
+        width: 0;
     }
 }

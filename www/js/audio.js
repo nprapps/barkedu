@@ -23,7 +23,6 @@ var AUDIO = (function() {
                 $controlBtn = $('#slide-' + rowAnchor).find('.control-btn');
                 $subtitleWrapper = $('#slide-' + rowAnchor).find('.subtitle-wrapper');
                 $subtitles = $('#slide-' + rowAnchor).find('.subtitles');
-                $slideTitle = $('#slide-' + rowAnchor).find('.slide-title');
 
                 narrativeURL = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + narrativeFilename;
                 subtitlesURL = APP_CONFIG.S3_BASE_URL + '/data/' + narrativeSubtitles;
@@ -122,7 +121,6 @@ var AUDIO = (function() {
             }
             // animate subtitles
             var activeSubtitle = null;
-            $slideTitle.hide();
             for (var i = 0; i < subtitles.length; i++) {
                 if (position < subtitles[i]['time']) {
                     if (i > 0) {

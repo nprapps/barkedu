@@ -127,11 +127,11 @@ var setSlidesForLazyLoading = function(slideIndex) {
     * Lazy-loads images in future slides because of reasons.
     */
     var slides = [
-        $slides.eq(slideIndex - 2),
-        $slides.eq(slideIndex - 1),
         $slides.eq(slideIndex),
         $slides.eq(slideIndex + 1),
-        $slides.eq(slideIndex + 2)
+        $slides.eq(slideIndex + 2),
+        $slides.eq(slideIndex + 3),
+        $slides.eq(slideIndex + 4)
     ];
 
     // Mobile suffix should be blank by default.

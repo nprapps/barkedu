@@ -125,20 +125,22 @@ var AUDIO = (function() {
             // animate subtitles
             var activeSubtitle = null;
             for (var i = 0; i < subtitles.length; i++) {
-                if (position < subtitles[i]['time'] && position > 0) {
-                    if (i > 0) {
-                        activeSubtitle = subtitles[i - 1]['transcript'];
+                if (position > 0) {
+                    if (position < subtitles[i]['time']) {
+                        if (i > 0) {
+                            activeSubtitle = subtitles[i - 1]['transcript'];
+                        } else {
+                            activeSubtitle = subtitles[i]['transcript'];
+                        }
+                        $subtitleWrapper.fadeIn();
+                        $subtitles.text(activeSubtitle);
+                        break;
                     } else {
+                        // this is the last one
+                        $subtitleWrapper.fadeIn();
                         activeSubtitle = subtitles[i]['transcript'];
+                        $subtitles.text(activeSubtitle);
                     }
-                    $subtitleWrapper.fadeIn();
-                    $subtitles.text(activeSubtitle);
-                    break;
-                } else {
-                    // this is the last one
-                    $subtitleWrapper.fadeIn();
-                    activeSubtitle = subtitles[i]['transcript'];
-                    $subtitles.text(activeSubtitle);
                 }
             }
         }

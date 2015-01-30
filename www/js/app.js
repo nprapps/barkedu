@@ -259,7 +259,9 @@ var animateProgress = function(index) {
     $currentProgress.css('width', percentage * 100 + '%');
 
     if (index === 0) {
-        $currentProgress.width(0);
+        $progressIndicator.width(0);
+    } else {
+        $progressIndicator.width('100%');
     }
 }
 

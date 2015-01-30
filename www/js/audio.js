@@ -106,7 +106,7 @@ var AUDIO = (function() {
         // animate progress bar
         var percentage = position / totalTime;
 
-        if (subtitles) {
+        if (position > 0) {
             // if we're resetting the bar. ugh.
             if ($playedBar.width() == $thisPlayerProgress.width()) {
                 $playedBar.addClass('no-transition');
@@ -119,10 +119,13 @@ var AUDIO = (function() {
                     $controlBtn.removeClass('pause').addClass('play');
                 }
             }
+        }
+
+        if (subtitles) {
             // animate subtitles
             var activeSubtitle = null;
             for (var i = 0; i < subtitles.length; i++) {
-                if (position < subtitles[i]['time']) {
+                if (position < subtitles[i]['time'] && position > 0) {
                     if (i > 0) {
                         activeSubtitle = subtitles[i - 1]['transcript'];
                     } else {

@@ -144,27 +144,14 @@ var AUDIO = (function() {
     var setUpAmbientPlayer = function() {
         $ambientPlayer.jPlayer({
             swfPath: 'js/lib',
-            loop: true,
             supplied: 'mp3',
         });
     }
 
     var setAmbientMedia = function(url) {
-        if (!$ambientPlayer.data().jPlayer.status.paused) {
-            $ambientPlayer.jPlayerFade().to(1000, 1, 0, function() {
-                $ambientPlayer.jPlayer('setMedia', {
-                    mp3: url
-                }).jPlayer('play');
-
-                $ambientPlayer.jPlayerFade().to(1000, 0, 1);
-
-            });
-        } else {
-            $ambientPlayer.jPlayer('setMedia', {
-                mp3: url
-            }).jPlayer('play');
-            $ambientPlayer.jPlayerFade().to(1000, 0, 1);
-        }
+        $ambientPlayer.jPlayer('setMedia', {
+            mp3: url
+        }).jPlayer('play');
     }
 
     var fakeAmbientPlayer = function() {

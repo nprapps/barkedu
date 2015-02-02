@@ -90,6 +90,7 @@
 
         p {
             font-size: @small-type;
+            color: #ddd;
             line-height: 1.3;
             margin: 15px auto;
             text-align: justify;
@@ -103,6 +104,18 @@
             @media @screen-mega-above {
                 font-size: 24px;
             }
+            
+            b {
+                color: #fff;
+                font-weight: normal;
+                font-style: italic;
+                display: inline-block;
+                
+                &:first-letter {
+                    //font-size: 30px;
+                } 
+            }
+            
         }
     }
 

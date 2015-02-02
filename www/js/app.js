@@ -353,23 +353,11 @@ var onClippyCopy = function(e) {
     ANALYTICS.copySummary();
 }
 
-var onSwipeLeft = function(e) {
-    if (isTouch) {
-        lastSlideExitEvent = 'swipeleft';
-        $.fn.fullpage.moveSlideRight();
-    }
-}
-
-var onSwipeRight = function(e) {
-    if (isTouch) {
-        lastSlideExitEvent = 'swiperight';
-        $.fn.fullpage.moveSlideLeft();
-    }
-}
-
 var onControlBtnClick = function(e) {
     e.preventDefault();
     AUDIO.toggleNarrativeAudio();
+    ANALYTICS.trackEvent('pause-button');
+
     e.stopPropagation();
 }
 

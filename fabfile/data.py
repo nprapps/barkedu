@@ -48,6 +48,7 @@ def parse_transcript(path):
                 words = row[0].strip()
                 time_str = row[1]
 
+
             hours, minutes, seconds, frame = [int(x) for x in time_str.split(':')]
 
             decimal = (float(frame) / 24)

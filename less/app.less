@@ -130,6 +130,7 @@ h1,h2,h3,h4,h5,h6,p,ul,ol,li {
         display: none;
         cursor: pointer;
         opacity: .3;
+        .box-sizing(border-box);
 
         @media @screen-small-above {
             top: 40%;
@@ -277,6 +278,14 @@ h1,h2,h3,h4,h5,h6,p,ul,ol,li {
              padding: 20px 100px;
         }
         z-index: 2;
+        
+        // Reset the box-sizing
+        *,
+        *:before,
+        *:after {
+          .box-sizing(border-box);
+        }
+
     }
 }
 img {

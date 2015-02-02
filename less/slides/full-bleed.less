@@ -1,3 +1,25 @@
+// Breakpoints
+@screen-mega-above: ~"screen and (min-width: 1440px)";
+@screen-large-above: ~"screen and (min-width: 1201px)";
+@screen-large: ~"screen and (min-width: 1200px)";
+@screen-medium-above: ~"screen and (min-width: 992px)";
+@screen-medium: ~"screen and (max-width: 991px)";
+@screen-small-above: ~"screen and (min-width: 768px)";
+@screen-small: ~"screen and (max-width: 767px)";
+@screen-tiny-above: ~"screen and (min-width: 481px)";
+@screen-tiny: ~"screen and (max-width: 480px)";
+
+.slide.full-bleed-foreground {
+    .full-block-cell {
+        vertical-align: top;
+        
+        @media @screen-medium-above {
+            vertical-align: middle;
+        }
+        
+    }   
+}
+
 .slide.full-bleed, .slide.full-bleed-foreground {
     
     .full-block {
@@ -15,7 +37,34 @@
     }
     
     .bleed-foreground {
-        max-width: 600px;
+        max-width: 300px;
+        
+        @media @screen-medium-above {
+            max-width: 400px; 
+        }
+        
+        @media @screen-large-above {
+            max-width: 500px; 
+        }
+        
+        @media @screen-mega-above {
+            max-width: 600px; 
+        }
+        
+        .liberia-map& {
+            @media @screen-medium-above {
+                max-width: 350px; 
+            }
+            
+            @media @screen-large-above {
+                max-width: 400px; 
+            }
+            
+            @media @screen-mega-above {
+                max-width: 600px; 
+            }
+        }
+        
         margin: 0 auto;
         img {
             display: block;
@@ -34,7 +83,6 @@
         z-index: 2;
         @media @screen-tiny-above {
             bottom: 30px; 
-
         }
         @media @screen-small-above {
            bottom: 70px; 

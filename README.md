@@ -360,10 +360,11 @@ The Google Analytics events tracked in this application are:
 |barkedu|tweet|`location`||||
 |barkedu|facebook|`location`||||
 |barkedu|email|`location`||||
-|barkedu|new-comment||||
 |barkedu|open-share-discuss||||
 |barkedu|close-share-discuss||||
-|barkedu|summary-copied||||
-|barkedu|featured-tweet-action|`action`||``tweet_url``|
-|barkedu|featured-facebook-action|`action`||``post_url``|
+|barkedu|narrative-control-button||||
+|barkedu|completion|`percentage`|||
+|barkedu|slide-exit|`slideIndex`|`timeOnLastSlide`|`lastSlideExitEvent`|
+|barkedu|first-right-arrow-clicked|`test`|`timeOnLastSlide`||
+|barkedu|keyboard-nav||||
 

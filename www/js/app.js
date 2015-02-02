@@ -101,7 +101,7 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     }
 
     // Completion tracking
-    how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
+    how_far = (slideIndex + 1) / ($slides.length - 1);
 
     if (how_far >= completion + 0.25) {
         completion = how_far - (how_far % 0.25);

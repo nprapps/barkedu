@@ -156,27 +156,9 @@ var AUDIO = (function() {
     }
 
     var setAmbientMedia = function(url) {
-        if (!isTouch) {
-            if (!$ambientPlayer.data().jPlayer.status.paused) {
-                $ambientPlayer.jPlayerFade().to(500, 1, 0, function() {
-                    $ambientPlayer.jPlayer('setMedia', {
-                        mp3: url
-                    }).jPlayer('play');
-
-                    $ambientPlayer.jPlayerFade().to(500, 0, 1);
-
-                });
-            } else {
-                $ambientPlayer.jPlayer('setMedia', {
-                    mp3: url
-                }).jPlayer('play');
-                $ambientPlayer.jPlayerFade().to(500, 0, 1);
-            }
-        } else {
-            $ambientPlayer.jPlayer('setMedia', {
-                mp3: url
-            }).jPlayer('play');
-        }
+        $ambientPlayer.jPlayer('setMedia', {
+            mp3: url
+        }).jPlayer('play');
     }
 
     var fakeAmbientPlayer = function() {

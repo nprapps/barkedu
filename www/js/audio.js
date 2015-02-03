@@ -33,7 +33,9 @@ var AUDIO = (function() {
 
             if (rowAnchor === slideAnchor && ambientFilename !== null && !NO_AUDIO) {
                 ambientURL = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + ambientFilename;
-                setAmbientMedia(ambientURL);
+                if (ambientURL !== $ambientPlayer.data().jPlayer.status.src) {
+                    setAmbientMedia(ambientURL);
+                }
 
             } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
                 // todo: handle browsers without webaudio
@@ -156,19 +158,19 @@ var AUDIO = (function() {
     var setAmbientMedia = function(url) {
         if (!isTouch) {
             if (!$ambientPlayer.data().jPlayer.status.paused) {
-                $ambientPlayer.jPlayerFade().to(250, 1, 0, function() {
+                $ambientPlayer.jPlayerFade().to(500, 1, 0, function() {
                     $ambientPlayer.jPlayer('setMedia', {
                         mp3: url
                     }).jPlayer('play');
 
-                    $ambientPlayer.jPlayerFade().to(250, 0, 1);
+                    $ambientPlayer.jPlayerFade().to(500, 0, 1);
 
                 });
             } else {
                 $ambientPlayer.jPlayer('setMedia', {
                     mp3: url
                 }).jPlayer('play');
-                $ambientPlayer.jPlayerFade().to(250, 0, 1);
+                $ambientPlayer.jPlayerFade().to(500, 0, 1);
             }
         } else {
             $ambientPlayer.jPlayer('setMedia', {

@@ -37,6 +37,14 @@
             padding: 0; 
         }
         
+        .subtitles {
+            margin-bottom: 40px;
+            @media @screen-tiny-above {
+                margin-bottom: 0;
+            }
+            
+        }
+        
         p {
             font-size: @small-type;
             line-height: 1.2;
@@ -75,8 +83,8 @@
         .control-btn {
             position: relative;
             z-index: 2;
-            width: 35px;
-            height: 35px;
+            width: 55px;
+            height: 55px;
             color: #fff;
             display: block;
             
@@ -88,22 +96,34 @@
             }
             
             &.play{
-                 padding: 6px 0 0 13px;
+                padding: 15px 0 0 25px;
+                @media @screen-tiny-above {
+                    padding: 6px 0 0 13px;
+                }
             }
             
             &.pause{
-                 padding: 6px 0 0 12px;
+                    padding: 15px 0 0 24px;
+                @media @screen-tiny-above {
+                    padding: 6px 0 0 12px;
+                }
             }
 
             &.pause:before {
                 font-family: "FontAwesome";
                 content: "\f04c";
-                font-size: 14px;
+                font-size: 20px;
+                @media @screen-tiny-above {
+                    font-size: 14px;
+                }
             }
             &.play:before {
                 font-family: "FontAwesome";
                 content: "\f04b";
-                font-size: 14px;
+                font-size: 20px;
+                @media @screen-tiny-above {
+                    font-size: 14px;
+                }
             }
         }
 

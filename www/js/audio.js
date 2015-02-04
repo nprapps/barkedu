@@ -139,7 +139,6 @@ var AUDIO = (function() {
                         break;
                     } else {
                         // this is the last one
-                        $subtitleWrapper.fadeIn();
                         activeSubtitle = subtitles[i]['transcript'];
                         $subtitles.text(activeSubtitle);
                     }

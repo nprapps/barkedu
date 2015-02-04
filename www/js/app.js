@@ -347,7 +347,6 @@ var rmFakeMobileHover = function() {
  * Text copied to clipboard.
  */
 var onClippyCopy = function(e) {
-    console.log(e);
     alert('Copied to your clipboard!');
 
     ANALYTICS.copySummary();

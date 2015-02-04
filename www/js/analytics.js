@@ -230,6 +230,10 @@ var ANALYTICS = (function () {
         trackEvent('completion', '1');
     }
 
+    var trackProgressBar = function(test) {
+        trackEvent('progress-bar-state', test);
+    }
+
     // SLIDES
 
     var exitSlide = function(slideIndex, lastSlideExitEvent) {
@@ -262,7 +266,8 @@ var ANALYTICS = (function () {
         'completeSeventyFivePercent': completeSeventyFivePercent,
         'completeOneHundredPercent': completeOneHundredPercent,
         'exitSlide': exitSlide,
-        'firstRightArrowClick': firstRightArrowClick
+        'firstRightArrowClick': firstRightArrowClick,
+        'trackProgressBar': trackProgressBar
     };
 }());
 

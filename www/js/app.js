@@ -28,6 +28,7 @@ var w;
 var h;
 var completion = 0;
 var arrowTest;
+var progressTest;
 var lastSlideExitEvent;
 var firstRightArrowClicked = false;
 // var hammer;
@@ -233,6 +234,10 @@ var showNavigation = function() {
 
         $nextArrow.off('click', onFirstRightArrowClick);
     }
+
+    if (progressTest === 'progress-bar') {
+        $progressIndicator.show();
+    }
 }
 
 var showArrows = function() {
@@ -246,6 +251,13 @@ var showArrows = function() {
 var determineArrowTest = function() {
     var possibleTests = ['faded-arrow', 'bright-arrow', 'bouncy-arrow'];
     var test = possibleTests[getRandomInt(0, possibleTests.length)]
+    return test;
+}
+
+var determineProgressTest = function() {
+    var possibleTests = ['progress-bar', 'no-progress-bar'];
+    var test = possibleTests[getRandomInt(0, possibleTests.length)];
+    ANALYTICS.trackProgressBar(test);
     return test;
 }
 
@@ -422,6 +434,7 @@ $(document).ready(function() {
     $upNext = $('.up-next');
     $controlBtn = $('.control-btn');
     arrowTest = determineArrowTest();
+    progressTest = determineProgressTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
     $share = $('.share');

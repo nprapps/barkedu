@@ -43,12 +43,11 @@ def parse_transcript(path):
         for row in tab_reader:
             # Premiere exports kind of suck
             if row[0] == '':
-                words = row[1].strip()
+                words = smartypants(row[1].strip())
                 time_str = row[2]
             else:
-                words = row[0].strip()
+                words = smartypants(row[0].strip())
                 time_str = row[1]
-
 
             hours, minutes, seconds, frame = [int(x) for x in time_str.split(':')]
 
@@ -57,7 +56,7 @@ def parse_transcript(path):
 
             segment = {
                 'time': total_seconds,
-                'transcript': smartypants(words),
+                'transcript': words,
             }
             data['subtitles'].append(segment)
 

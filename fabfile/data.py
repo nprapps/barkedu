@@ -12,6 +12,7 @@ import json
 
 from fabric.api import task
 from facebook import GraphAPI
+from smartypants import smartypants
 from twitter import Twitter, OAuth
 
 import app_config
@@ -56,7 +57,7 @@ def parse_transcript(path):
 
             segment = {
                 'time': total_seconds,
-                'transcript': words,
+                'transcript': smartypants(words),
             }
             data['subtitles'].append(segment)
 

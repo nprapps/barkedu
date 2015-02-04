@@ -135,12 +135,12 @@ var AUDIO = (function() {
                             activeSubtitle = subtitles[i]['transcript'];
                         }
                         $subtitleWrapper.fadeIn();
-                        $subtitles.text(activeSubtitle);
+                        $subtitles.html(activeSubtitle);
                         break;
                     } else {
                         // this is the last one
                         activeSubtitle = subtitles[i]['transcript'];
-                        $subtitles.text(activeSubtitle);
+                        $subtitles.html(activeSubtitle);
                     }
                 }
             }
@@ -180,6 +180,16 @@ var AUDIO = (function() {
             $ambientPlayer.jPlayer('play');
         }
     }
+
+    var htmlDecode = function(input) {
+        var e = document.createElement('div');
+        e.innerHTML = input;
+        return e.childNodes[0].nodeValue;
+        e.remove();
+    }
+
+htmlDecode("&amp;"); // "&"
+htmlDecode("&gt;"); // ">"
 
     return {
         'checkForAudio': checkForAudio,

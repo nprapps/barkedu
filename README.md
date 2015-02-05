@@ -363,8 +363,8 @@ The Google Analytics events tracked in this application are:
 |barkedu|open-share-discuss||||
 |barkedu|close-share-discuss||||
 |barkedu|narrative-control-button||||
-|barkedu|completion|`percentage`|||
-|barkedu|slide-exit|`slideIndex`|`timeOnLastSlide`|`lastSlideExitEvent`|
+|barkedu|completion|`percentage`|null|`progressTest`|
+|barkedu|slide-exit|`slideIndex`|`timeOnLastSlide`|`lastSlideExitEvent`|`progressTest`
 |barkedu|first-right-arrow-clicked|`test`|`timeOnLastSlide`||
 |barkedu|keyboard-nav||||
 

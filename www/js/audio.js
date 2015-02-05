@@ -29,6 +29,7 @@ var AUDIO = (function() {
                 setNarrativeMedia();
             } else {
                 _pauseNarrativePlayer();
+                narrativeVisible = false;
             }
 
             if (rowAnchor === slideAnchor && ambientFilename !== null && !NO_AUDIO) {
@@ -60,9 +61,14 @@ var AUDIO = (function() {
         $narrativePlayer.jPlayer('setMedia', {
             mp3: narrativeURL
         });
-        $narrativePlayer.jPlayer('play');
-        $controlBtn.removeClass('play').addClass('pause');
         narrativeVisible = true;
+        animateSubtitles(0.01);
+        setTimeout(function() {
+            if (narrativeVisible) {
+                $narrativePlayer.jPlayer('play');
+                $controlBtn.removeClass('play').addClass('pause');
+            }
+        }, 1000)
     }
 
     var _resumeNarrativePlayer = function() {
@@ -90,10 +96,6 @@ var AUDIO = (function() {
         $narrativePlayer.jPlayer('setMedia', {
             mp3: APP_CONFIG.S3_BASE_URL + '/assets/audio/' + 'doctor_01.mp3'
         }).jPlayer('pause');
-    }
-
-    var checkNarrativeState = function(anchor) {
-        narrativeVisible = false;
     }
 
     var onNarrativeTimeupdate = function(e) {
@@ -188,6 +190,5 @@ var AUDIO = (function() {
         'setAmbientMedia': setAmbientMedia,
         'fakeAmbientPlayer': fakeAmbientPlayer,
         'fakeNarrativePlayer': fakeNarrativePlayer,
-        'checkNarrativeState': checkNarrativeState
     }
 }());

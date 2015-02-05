@@ -157,7 +157,7 @@ var AUDIO = (function() {
     var setAmbientMedia = function(url) {
         $ambientPlayer.jPlayer('setMedia', {
             mp3: url
-        });
+        }).jPlayer('play');
     }
 
     var fakeAmbientPlayer = function() {

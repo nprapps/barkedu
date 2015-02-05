@@ -36,10 +36,6 @@ var AUDIO = (function() {
                 if (ambientURL !== $ambientPlayer.data().jPlayer.status.src) {
                     setAmbientMedia(ambientURL);
                 }
-
-            } else if (rowAnchor === slideAnchor && ambientVolume !== null && ambientPlayer && ambientPlayer.playing()) {
-                // todo: handle browsers without webaudio
-                ambientPlayer.fade(ambientPlayer.volume(), ambientVolume, 1000);
             }
         }
     }
@@ -63,7 +59,8 @@ var AUDIO = (function() {
     var _startNarrativePlayer = function() {
         $narrativePlayer.jPlayer('setMedia', {
             mp3: narrativeURL
-        }).jPlayer('play');
+        });
+        $narrativePlayer.jPlayer('play');
         $controlBtn.removeClass('play').addClass('pause');
         narrativeVisible = true;
     }
@@ -75,8 +72,6 @@ var AUDIO = (function() {
 
     var _pauseNarrativePlayer = function(end) {
         $narrativePlayer.jPlayer('pause');
-
-        clearInterval(progressInterval);
         if (end) {
             $playedBar.css('width', $thisPlayerProgress.width() + 'px');
         }
@@ -122,7 +117,10 @@ var AUDIO = (function() {
                 }
             }
         }
+        animateSubtitles(position);
+    }
 
+    var animateSubtitles = function(position) {
         if (subtitles) {
             // animate subtitles
             var activeSubtitle = null;
@@ -157,7 +155,7 @@ var AUDIO = (function() {
     var setAmbientMedia = function(url) {
         $ambientPlayer.jPlayer('setMedia', {
             mp3: url
-        }).jPlayer('play');
+        });
     }
 
     var fakeAmbientPlayer = function() {
@@ -180,16 +178,6 @@ var AUDIO = (function() {
             $ambientPlayer.jPlayer('play');
         }
     }
-
-    var htmlDecode = function(input) {
-        var e = document.createElement('div');
-        e.innerHTML = input;
-        return e.childNodes[0].nodeValue;
-        e.remove();
-    }
-
-htmlDecode("&amp;"); // "&"
-htmlDecode("&gt;"); // ">"
 
     return {
         'checkForAudio': checkForAudio,

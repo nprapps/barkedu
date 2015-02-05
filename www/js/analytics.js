@@ -214,33 +214,29 @@ var ANALYTICS = (function () {
         }
     }
 
-    var completeTwentyFivePercent =  function() {
-        trackEvent('completion', '0.25');
+    var completeTwentyFivePercent =  function(progressTest) {
+        trackEvent('completion', '0.25', null, progressTest);
     }
 
-    var completeFiftyPercent =  function() {
-        trackEvent('completion', '0.5');
+    var completeFiftyPercent =  function(progressTest) {
+        trackEvent('completion', '0.5', null, progressTest);
     }
 
-    var completeSeventyFivePercent =  function() {
-        trackEvent('completion', '0.75');
+    var completeSeventyFivePercent =  function(progressTest) {
+        trackEvent('completion', '0.75', null, progressTest);
     }
 
-    var completeOneHundredPercent =  function() {
-        trackEvent('completion', '1');
-    }
-
-    var trackProgressBar = function(test) {
-        trackEvent('progress-bar-state', test);
+    var completeOneHundredPercent =  function(progressTest) {
+        trackEvent('completion', '1', null, progressTest);
     }
 
     // SLIDES
 
-    var exitSlide = function(slideIndex, lastSlideExitEvent) {
+    var exitSlide = function(slideIndex, lastSlideExitEvent, progressTest) {
         var currentTime = new Date();
         timeOnLastSlide = Math.abs(currentTime - slideStartTime);
         slideStartTime = currentTime;
-        trackEvent('slide-exit', slideIndex, timeOnLastSlide, lastSlideExitEvent);
+        trackEvent('slide-exit', slideIndex, timeOnLastSlide, lastSlideExitEvent, progressTest);
     }
 
     // This depends on exitSlide executing
@@ -267,7 +263,6 @@ var ANALYTICS = (function () {
         'completeOneHundredPercent': completeOneHundredPercent,
         'exitSlide': exitSlide,
         'firstRightArrowClick': firstRightArrowClick,
-        'trackProgressBar': trackProgressBar
     };
 }());
 

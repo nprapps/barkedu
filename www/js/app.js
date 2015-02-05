@@ -108,16 +108,16 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
         completion = how_far - (how_far % 0.25);
 
         if (completion === 0.25) {
-            ANALYTICS.completeTwentyFivePercent();
+            ANALYTICS.completeTwentyFivePercent(progressTest);
         }
         else if (completion === 0.5) {
-            ANALYTICS.completeFiftyPercent();
+            ANALYTICS.completeFiftyPercent(progressTest);
         }
         else if (completion === 0.75) {
-            ANALYTICS.completeSeventyFivePercent();
+            ANALYTICS.completeSeventyFivePercent(progressTest);
         }
         else if (completion === 1) {
-            ANALYTICS.completeOneHundredPercent();
+            ANALYTICS.completeOneHundredPercent(progressTest);
         }
     }
 };
@@ -257,7 +257,6 @@ var determineArrowTest = function() {
 var determineProgressTest = function() {
     var possibleTests = ['progress-bar', 'no-progress-bar'];
     var test = possibleTests[getRandomInt(0, possibleTests.length)];
-    ANALYTICS.trackProgressBar(test);
     return test;
 }
 
@@ -282,7 +281,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     * Called when leaving a slide.
     */
     AUDIO.checkNarrativeState();
-    ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
+    ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent, progressTest);
 }
 
 var onFirstRightArrowClick = function() {

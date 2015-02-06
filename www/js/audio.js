@@ -33,7 +33,14 @@ var AUDIO = (function() {
             }
 
             if (rowAnchor === slideAnchor && ambientFilename !== null && !NO_AUDIO) {
+
                 ambientURL = APP_CONFIG.S3_BASE_URL + '/assets/audio/' + ambientFilename;
+
+                if (ambientFilename === 'STOP') {
+                    $ambientPlayer.jPlayer('pause');
+                    return;
+                }
+
                 if (ambientURL !== $ambientPlayer.data().jPlayer.status.src) {
                     setAmbientMedia(ambientURL);
                 }

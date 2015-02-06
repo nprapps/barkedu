@@ -1,12 +1,18 @@
 {% extends '_slide.html' %}
 {% block slide_content %}
+
+<div class="closing-remarks">
+        {{ row.text3|smarty }}
+    </div>
+
+<!--
     <div class="learn-more">
         <h3>Learn More</h3>
         <div class="story-description clearfix">
             {{ row.text1|smarty }}
         </div>
     </div>
-
+-->
     <div class="share-panel share-panel-section clearfix">
         <h3>Share your thoughts</h3>
         <p class="share-story"><a href="mailto:?body={{ COPY.sharing.email_body|safe }}&subject={{ COPY.sharing.email_subject }}" onclick="_gaq.push(['_trackEvent', '{{ PROJECT_SLUG }}', 'email', 'conclusion']);"><i class="fa fa-envelope share-icon"></i> <b>Email</b></a></p>

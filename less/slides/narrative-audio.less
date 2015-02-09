@@ -85,6 +85,7 @@
             z-index: 2;
             width: 55px;
             height: 55px;
+            .transition(opacity 1s linear);
             @media @screen-tiny-above {
                 width: 35px;
                 height: 35px;
@@ -100,6 +101,7 @@
             }
             
             &.play{
+                opacity: 1;
                 padding: 15px 0 0 25px;
                 @media @screen-tiny-above {
                     padding: 6px 0 0 13px;
@@ -107,7 +109,8 @@
             }
             
             &.pause{
-                    padding: 15px 0 0 24px;
+                padding: 15px 0 0 24px;
+                opacity: .4;
                 @media @screen-tiny-above {
                     padding: 6px 0 0 12px;
                 }

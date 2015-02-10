@@ -248,6 +248,13 @@ h1,h2,h3,h4,h5,h6,p,ul,ol,li {
     .background-size(cover);
     background-position: center center;
     position: relative;
+    &.background-right {
+        background-position: right center;
+        @media @screen-small-above {
+            background-position: center center;
+        }
+    }
+    
 }
 
 // full width container within a section or slide

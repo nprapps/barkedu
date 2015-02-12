@@ -2,17 +2,9 @@
 {% block slide_content %}
 
 <div class="closing-remarks">
-        {{ row.text3|smarty }}
+        {{ row.text1|smarty }}
     </div>
 
-<!--
-    <div class="learn-more">
-        <h3>Learn More</h3>
-        <div class="story-description clearfix">
-            {{ row.text1|smarty }}
-        </div>
-    </div>
--->
     <div class="share-panel share-panel-section clearfix">
         <h3>Share your thoughts</h3>
         <p class="share-story"><a href="mailto:?body={{ COPY.sharing.email_body|safe }}&subject={{ COPY.sharing.email_subject }}" onclick="_gaq.push(['_trackEvent', '{{ PROJECT_SLUG }}', 'email', 'conclusion']);"><i class="fa fa-envelope share-icon"></i> <b>Email</b></a></p>
@@ -23,9 +15,4 @@
             <a href="http://twitter.com/share?text={{ COPY.sharing.twitter_text|urlencode }}&amp;url={{ COPY.sharing.share_url|urlencode }}" target="_blank" onclick="_gaq.push(['_trackEvent', '{{ PROJECT_SLUG }}', 'tweet', 'conclusion']);"><i class="fa fa-twitter share-icon"></i> <b> Twitter </b></a>
         </p>
     </div><!-- / share-panel-section -->
-
-    <div class="project-credits">
-        <h6>Project Credits</h6>
-        {{ row.text2|smarty }}
-    </div>
 {% endblock %}

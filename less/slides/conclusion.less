@@ -3,6 +3,10 @@
     .full-block {
         background: @darker-overlay;
         
+        .full-block-cell {
+            vertical-align: middle;
+        }
+        
         .full-block-content {
             max-width: 700px;
             margin: 0 auto;
@@ -34,7 +38,7 @@
             }
             
             .share-panel {
-                margin-left: 20px;
+                
                 @media @screen-small-above {
                     margin: 0;
                 }
@@ -74,7 +78,7 @@
             }
             
             .closing-remarks {
-                margin: 0 0 30px 20px;
+                margin: 0 0 30px 0;
                 @media @screen-small-above {
                     margin: 60px 0 30px 0;
                 }

@@ -18,6 +18,13 @@ var $share;
 var $shareModal;
 var $progressIndicator
 var $currentProgress;
+var $support;
+var $supportBtn;
+var $question;
+var $careStory;
+var $careStoryBtns;
+var $email;
+var $emailBtn;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -29,7 +36,7 @@ var h;
 var completion = 0;
 var arrowTest;
 var progressTest;
-var lastSlideExitEvent;
+var conclusionTest;
 var firstRightArrowClicked = false;
 // var hammer;
 var NO_AUDIO = (window.location.search.indexOf('noaudio') >= 0);
@@ -88,17 +95,16 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     setSlidesForLazyLoading(slideIndex);
     showNavigation();
     AUDIO.checkForAudio(slideAnchor);
-    checkForVideo(slideAnchor);
     animateProgress(slideIndex);
 
-    if ($('#slide-' + slideAnchor).hasClass('image-fade')) {
-        fadeBgImage(slideAnchor);
-    }
-
-    if (slideIndex === 0 || slideIndex === $slides.length - 1) {
+    if (slideIndex === 0) {
         $share.hide();
     } else {
         $share.show();
+    }
+
+    if (slideIndex === $slides.length - 1) {
+        buildConclusionSlide();
     }
 
     // Completion tracking

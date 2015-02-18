@@ -463,7 +463,6 @@ $(document).ready(function() {
     $shareModal.on('hidden.bs.modal', onShareModalHidden);
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
-    $upNext.on('click', onNextPostClick);
     $controlBtn.on('click', onControlBtnClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);

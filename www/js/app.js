@@ -248,20 +248,60 @@ var showArrows = function() {
     $arrows.show();
 };
 
-var determineArrowTest = function() {
-    var possibleTests = ['faded-arrow', 'bright-arrow', 'bouncy-arrow'];
+var determineTest = function(possibleTests) {
     var test = possibleTests[getRandomInt(0, possibleTests.length)]
-    return test;
-}
-
-var determineProgressTest = function() {
-    var possibleTests = ['progress-bar', 'no-progress-bar'];
-    var test = possibleTests[getRandomInt(0, possibleTests.length)];
-    return test;
+    return test
 }
 
 var getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+var setCustomVars = function() {
+    ANALYTICS.setCustomVar(40, 'progress-test', progressTest);
+}
+
+var buildConclusionSlide = function() {
+    ANALYTICS.trackEvent('tests-run', conclusionTest);
+
+    if (conclusionTest === 'no-question') {
+        $support.show();
+    } else {
+        $question.text(COPY['post_metadata'][conclusionTest]);
+        $careStory.show();
+    }
+}
+
+var onCareStoryBtnClick = function(e) {
+    e.preventDefault();
+
+    var $this = $(this);
+
+    $careStory.hide();
+
+    if ($this.hasClass('yes')) {
+        ANALYTICS.trackEvent('like-story', 'yes');
+        $support.show();
+    } else {
+        ANALYTICS.trackEvent('like-story', 'no');
+        $email.show();
+    }
+}
+
+var onSupportBtnClick = function(e) {
+    e.preventDefault();
+
+    var $this = $(this);
+    var link = $this.attr('href');
+
+    ANALYTICS.trackEvent('support-btn-click', conclusionTest);
+
+    window.top.location = link
+    return true;
+}
+
+var onEmailBtnClick = function() {
+    ANALYTICS.trackEvent('email-btn-click');
 }
 
 var animateProgress = function(index) {
@@ -280,7 +320,7 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     /*
     * Called when leaving a slide.
     */
-    ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent, progressTest);
+    ANALYTICS.exitSlide(slideIndex.toString());
 }
 
 var onFirstRightArrowClick = function() {
@@ -291,7 +331,6 @@ var onFirstRightArrowClick = function() {
 }
 
 var onStartCardButtonClick = function() {
-    lastSlideExitEvent = 'go';
     $.fn.fullpage.moveSlideRight();
     if (isTouch) {
         AUDIO.fakeAmbientPlayer();
@@ -299,13 +338,8 @@ var onStartCardButtonClick = function() {
     }
 }
 
-var onArrowsClick = function() {
-    lastSlideExitEvent = 'arrow';
-}
-
 var onDocumentKeyDown = function(e) {
     if (e.which === 37 || e.which === 39) {
-        lastSlideExitEvent = 'keyboard';
         ANALYTICS.useKeyboardNavigation();
         if (e.which === 37) {
             $.fn.fullpage.moveSlideLeft();
@@ -319,7 +353,6 @@ var onDocumentKeyDown = function(e) {
 
 var onSlideClick = function(e) {
     if (isTouch) {
-        lastSlideExitEvent = 'tap';
         if ($slides.first().hasClass('active')) {
             AUDIO.fakeAmbientPlayer();
             AUDIO.fakeNarrativePlayer();
@@ -431,33 +464,42 @@ $(document).ready(function() {
     $nextArrow = $arrows.filter('.next');
     $upNext = $('.up-next');
     $controlBtn = $('.control-btn');
-    arrowTest = determineArrowTest();
-    progressTest = determineProgressTest();
     $narrativePlayer = $('#narrative-player');
     $ambientPlayer = $('#ambient-player');
     $share = $('.share');
     $shareModal = $('#share-modal')
     $progressIndicator = $('.progress-indicator');
-    $currentProgress = $('.current-progress')
+    $currentProgress = $('.current-progress');
+    $support = $('.support')
+    $supportBtn = $('.support-btn');
+    $careStory = $('.care-story');
+    $question = $('.question');
+    $careStoryBtns = $('.care-story-btn');
+    $email = $('.email');
+    $emailBtn = $('.email-btn');
+
+    arrowTest = determineTest(['faded-arrow', 'bright-arrow', 'bouncy-arrow']);
+    progressTest = determineTest(['progress-bar', 'no-progress-bar']);
+    conclusionTest = determineTest(['no-question', 'question_a', 'question_b', 'question_c']);
 
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);
     $startCardButton.on('click', onStartCardButtonClick);
     $slides.on('click', onSlideClick);
     $upNext.on('click', onNextPostClick);
-    $arrows.on('click', onArrowsClick);
-    // hammer = new Hammer(document.body);
-    // hammer.on('swipeleft', onSwipeLeft);
-    // hammer.on('swiperight', onSwipeRight);
     $controlBtn.on('click', onControlBtnClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);
+    $careStoryBtns.on('click', onCareStoryBtnClick);
+    $supportBtn.on('click', onSupportBtnClick);
+    $emailBtn.on('click', onEmailBtnClick);
     $(document).keydown(onDocumentKeyDown);
 
     AUDIO.setUpNarrativePlayer();
     AUDIO.setUpAmbientPlayer();
     setUpFullPage();
     resize();
+    setCustomVars();
 
     // Redraw slides if the window resizes
     window.addEventListener("deviceorientation", resize, true);

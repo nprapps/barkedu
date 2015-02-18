@@ -136,31 +136,31 @@ var ANALYTICS = (function () {
     /*
      * Event tracking.
      */
-    var trackEvent = function(eventName, label, value, custom1, custom2) {
+    var trackEvent = function(eventName, label, value) {
         var args = ['_trackEvent', APP_CONFIG.PROJECT_SLUG];
 
         args.push(eventName);
 
         if (label) {
             args.push(label);
-        } else if (value || custom1 || custom2) {
+        } else if (value) {
             args.push('');
         }
 
         if (value) {
             args.push(value);
-        } else if (custom1 || custom2) {
-            args.push(0);
         }
 
-        if (custom1) {
-            args.push(custom1)
-        } else if (custom2) {
-            args.push('');
-        }
+        _gaq.push(args);
+    }
 
-        if (custom2) {
-            args.push(custom2);
+    var setCustomVar = function(index, varName, value, scope) {
+        var args = ['_setCustomVar', index, varName, value]
+
+        if (scope) {
+            args.push(scope);
+        } else {
+            args.push(3);
         }
 
         _gaq.push(args);
@@ -214,29 +214,29 @@ var ANALYTICS = (function () {
         }
     }
 
-    var completeTwentyFivePercent =  function(progressTest) {
-        trackEvent('completion', '0.25', null, progressTest);
+    var completeTwentyFivePercent =  function() {
+        trackEvent('completion', '0.25');
     }
 
-    var completeFiftyPercent =  function(progressTest) {
-        trackEvent('completion', '0.5', null, progressTest);
+    var completeFiftyPercent =  function() {
+        trackEvent('completion', '0.5');
     }
 
-    var completeSeventyFivePercent =  function(progressTest) {
-        trackEvent('completion', '0.75', null, progressTest);
+    var completeSeventyFivePercent =  function() {
+        trackEvent('completion', '0.75');
     }
 
-    var completeOneHundredPercent =  function(progressTest) {
-        trackEvent('completion', '1', null, progressTest);
+    var completeOneHundredPercent =  function() {
+        trackEvent('completion', '1');
     }
 
     // SLIDES
 
-    var exitSlide = function(slideIndex, lastSlideExitEvent, progressTest) {
+    var exitSlide = function(slideIndex) {
         var currentTime = new Date();
         timeOnLastSlide = Math.abs(currentTime - slideStartTime);
         slideStartTime = currentTime;
-        trackEvent('slide-exit', slideIndex, timeOnLastSlide, lastSlideExitEvent, progressTest);
+        trackEvent('slide-exit', slideIndex, timeOnLastSlide);
     }
 
     // This depends on exitSlide executing
@@ -247,6 +247,7 @@ var ANALYTICS = (function () {
     return {
         'setupAll': setupAll,
         'trackEvent': trackEvent,
+        'setCustomVar': setCustomVar,
         'openShareDiscuss': openShareDiscuss,
         'closeShareDiscuss': closeShareDiscuss,
         'clickTweet': clickTweet,

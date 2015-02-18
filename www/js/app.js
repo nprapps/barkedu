@@ -177,20 +177,6 @@ var loadImages = function($slide) {
     }
 };
 
-var checkForVideo = function(slideAnchor) {
-    var $video = $('#slide-' + slideAnchor).find('video');
-    if ($video.length > 0 && !isTouch) {
-        var sources = $video.find('source');
-        var video = $video.get(0);
-
-        if (!sources.attr('src')) {
-            sources.attr('src', sources.data('src'));
-            video.load();
-        }
-        video.play();
-    }
-}
-
 var showNavigation = function() {
     /*
     * Nav doesn't exist by default.
@@ -408,13 +394,6 @@ var onControlBtnClick = function(e) {
 
     e.stopPropagation();
 }
-
-var fadeBgImage = function(slideAnchor) {
-    $('#slide-' + slideAnchor).addClass('image-fade-start');
-}
-
-// use the property name to generate the prefixed event name
-
 
 var onVisibilityChange = function() {
     AUDIO.toggleAllAudio();

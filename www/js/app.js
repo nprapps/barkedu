@@ -354,14 +354,6 @@ var onSlideClick = function(e) {
     return true;
 }
 
-var onNextPostClick = function(e) {
-    e.preventDefault();
-
-    ANALYTICS.trackEvent('next-post');
-    window.top.location = NEXT_POST_URL;
-    return true;
-}
-
 var fakeMobileHover = function() {
     $(this).css({
         'background-color': '#fff',
@@ -372,9 +364,9 @@ var fakeMobileHover = function() {
 
 var rmFakeMobileHover = function() {
     $(this).css({
-        'background-color': 'rgba(0, 0, 0, 0.2)',
+        'background-color': 'rgba(0, 0, 0, 0.5)',
         'color': '#fff',
-        'opacity': .3
+        'opacity': .5
     });
 }
 

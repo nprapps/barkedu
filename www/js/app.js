@@ -465,7 +465,7 @@ $(document).ready(function() {
 
     arrowTest = determineTest(['faded-arrow', 'bright-arrow', 'bouncy-arrow']);
     progressTest = determineTest(['progress-bar', 'no-progress-bar']);
-    conclusionTest = determineTest(['no-question', 'question_a', 'question_b', 'question_c']);
+    conclusionTest = determineTest(['no-question', 'question_a', 'question_b', 'question_c', 'question_d']);
 
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);

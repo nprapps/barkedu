@@ -10,7 +10,9 @@
             max-width: 700px;
             margin: 0 auto;
 
-            
+            h2 {
+                text-transform: uppercase;
+            }
             
             p {
                 font-family: georgia, serif;
@@ -26,16 +28,6 @@
             .care-story, .support, .email {
                 display: none;
             }
-            
-            .care-story-wrapper {
-                
-                h3 {
-                    font-size: 18px;
-                }
-                
-            }
-            
-            
             
             .credits {
                 padding-top: 20px;
@@ -63,9 +55,18 @@
                 }
             }
 
-            .share-panel {
-
-                margin: 20px 0;
+            .care-story-wrapper {
+                margin-bottom: 20px;
+                
+                h3 {
+                    font-family: georgia, serif;
+                    font-size: 16px;
+                    line-height: 1.5;
+                    margin: 0;
+                    @media @screen-small-above {
+                       font-size: 22px;
+                    }
+                }
 
                 .share-story {
 

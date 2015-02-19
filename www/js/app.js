@@ -328,6 +328,8 @@ var onFirstRightArrowClick = function() {
 }
 
 var onStartCardButtonClick = function() {
+    ANALYTICS.trackEvent('begin');
+
     $.fn.fullpage.moveSlideRight();
     if (isTouch) {
         AUDIO.fakeAmbientPlayer();

@@ -277,10 +277,10 @@ var onCareStoryBtnClick = function(e) {
     $careStory.hide();
 
     if ($this.hasClass('yes')) {
-        ANALYTICS.trackEvent('like-story', 'yes');
+        ANALYTICS.trackEvent('like-story-yes', conclusionTest);
         $support.show();
     } else {
-        ANALYTICS.trackEvent('like-story', 'no');
+        ANALYTICS.trackEvent('like-story-no', conclusionTest);
         $email.show();
     }
 }

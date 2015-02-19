@@ -378,4 +378,4 @@ The Google Analytics custom variables tracked in this application are:
 
 |Index|Name|Value|Scope|
 |-----|----|-----|-----|
-|40|progress-bar|`progressTest`|3|
+|40|progress-test|`progressTest`|3|

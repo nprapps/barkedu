@@ -38,6 +38,7 @@ var arrowTest;
 var progressTest;
 var conclusionTest;
 var firstRightArrowClicked = false;
+var presentedConclusion = false;
 // var hammer;
 var NO_AUDIO = (window.location.search.indexOf('noaudio') >= 0);
 var visibilityProperty = null;
@@ -256,12 +257,16 @@ var setCustomVars = function() {
 var buildConclusionSlide = function() {
     ANALYTICS.trackEvent('tests-run', conclusionTest);
 
-    if (conclusionTest === 'no-question') {
-        $support.show();
-    } else {
-        $question.text(COPY['post_metadata'][conclusionTest]);
-        $careStory.show();
+    if (!presentedConclusion) {
+        presentedConclusion = true;
+        if (conclusionTest === 'no-question') {
+            $support.show();
+        } else {
+            $question.text(COPY['post_metadata'][conclusionTest]);
+            $careStory.show();
+        }
     }
+
 }
 
 var onCareStoryBtnClick = function(e) {

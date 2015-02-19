@@ -298,7 +298,7 @@ var onSupportBtnClick = function(e) {
 }
 
 var onEmailBtnClick = function() {
-    ANALYTICS.trackEvent('email-btn-click');
+    ANALYTICS.trackEvent('email-btn-click', conclusionTest);
 }
 
 var animateProgress = function(index) {

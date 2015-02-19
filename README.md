@@ -355,16 +355,25 @@ Analytics
 
 The Google Analytics events tracked in this application are:
 
-|Category|Action|Label|Value|Custom 1|Custom 2|
-|--------|------|-----|-----|--------|--------|
-|barkedu|tweet|`location`||||
-|barkedu|facebook|`location`||||
-|barkedu|email|`location`||||
-|barkedu|open-share-discuss||||
-|barkedu|close-share-discuss||||
-|barkedu|narrative-control-button||||
-|barkedu|completion|`percentage`||`progressTest`|
-|barkedu|slide-exit|`slideIndex`|`timeOnLastSlide`|`lastSlideExitEvent`|`progressTest`
-|barkedu|first-right-arrow-clicked|`test`|`timeOnLastSlide`||
-|barkedu|keyboard-nav||||
+|Category|Action|Label|Value|
+|--------|------|-----|-----|
+|life-after-death|tweet|`location`||
+|life-after-death|facebook|`location`||
+|life-after-death|email|`location`||
+|life-after-death|open-share-discuss|||
+|life-after-death|close-share-discuss|||
+|life-after-death|pause-button|||
+|life-after-death|completion|`percentage`||
+|life-after-death|slide-exit|`slideIndex`|`timeOnSlide`|
+|life-after-death|first-right-arrow-clicked|`test`||
+|life-after-death|keyboard-nav|||
+|life-after-death|tests-run|`conclusionTest`||
+|life-after-death|like-story|`answer`||
+|life-after-death|support-btn-click|`conclusionTest`||
+|life-after-death|email-btn-click|`conclusionTest`||
 
+The Google Analytics custom variables tracked in this application are:
+
+|Index|Name|Value|Scope|
+|-----|----|-----|-----|
+|40|progress-bar|`progressTest`|3|

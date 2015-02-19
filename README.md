@@ -362,6 +362,7 @@ The Google Analytics events tracked in this application are:
 |life-after-death|email|`location`||
 |life-after-death|open-share-discuss|||
 |life-after-death|close-share-discuss|||
+|life-after-death|begin|||
 |life-after-death|pause-button|||
 |life-after-death|completion|`percentage`||
 |life-after-death|slide-exit|`slideIndex`|`timeOnSlide`|

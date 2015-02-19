@@ -20,8 +20,10 @@
             h2 {
                 font-size: 24px;
                 text-transform: uppercase;
+                margin-bottom: 0;
                 @media @screen-small-above {
-                    font-size: 30px;
+                    font-size: 18px;
+                    font-weight: bold;
                 }
             }
             
@@ -31,7 +33,7 @@
                 line-height: 1.5;
                 margin-bottom: 15px;
                 @media @screen-small-above {
-                   font-size: 22px;
+                   font-size: 20px;
                    margin-bottom: 20px;
                 }
             }
@@ -93,7 +95,8 @@
                     }
 
                     a {
-                        
+                        color: #000;
+                        background-color: #fff;
                         font-size: 12px;
                         display: block;
                         text-transform: uppercase;
@@ -102,6 +105,14 @@
                         text-align: left;
                         padding: 5px;
                         font-family: "Gotham", Helvetica, Arial, sans-serif;
+                        &:hover {
+                            .no-touch & {
+                                background-color: #000;
+                                color: #fff;
+                                cursor: pointer;
+                            }
+                        }
+                        
                         @media @screen-tiny-above {
                             width: auto;
                             text-align: center;

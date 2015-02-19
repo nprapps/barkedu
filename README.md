@@ -368,7 +368,8 @@ The Google Analytics events tracked in this application are:
 |life-after-death|first-right-arrow-clicked|`test`||
 |life-after-death|keyboard-nav|||
 |life-after-death|tests-run|`conclusionTest`||
-|life-after-death|like-story|`answer`||
+|life-after-death|like-story-yes|`conclusionTest`||
+|life-after-death|like-story-no|`conclusionTest`||
 |life-after-death|support-btn-click|`conclusionTest`||
 |life-after-death|email-btn-click|`conclusionTest`||
 

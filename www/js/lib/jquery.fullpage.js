@@ -142,7 +142,7 @@
 
         //if css3 is not supported, it will use jQuery animations
         if(options.css3){
-            options.css3 = support3d();
+            // options.css3 = support3d();
         }
 
         $('body').wrapInner('<div id="superContainer" />');

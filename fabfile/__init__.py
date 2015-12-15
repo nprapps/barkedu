@@ -121,7 +121,7 @@ def update():
     """
     Update all application data not in repository (copy, assets, etc).
     """
-    text.update()
+    # text.update()
     assets.sync()
     data.update()
 
@@ -192,7 +192,7 @@ def shiva_the_destroyer():
     )
 
     with settings(warn_only=True):
-        flat.delete_folder(app_config.PROJECT_SLUG) 
+        flat.delete_folder(app_config.PROJECT_SLUG)
 
         if app_config.DEPLOY_TO_SERVERS:
             servers.delete_project()

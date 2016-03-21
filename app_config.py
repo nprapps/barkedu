@@ -15,7 +15,7 @@ NAMES
 """
 # Project name to be used in urls
 # Use dashes, not underscores!
-PROJECT_SLUG = 'life-after-death'
+PROJECT_SLUG = 'life-after-death-wpp'
 
 # Project name to be used in file paths
 PROJECT_FILENAME = 'barkedu'
@@ -195,4 +195,3 @@ Run automated configuration
 DEPLOYMENT_TARGET = os.environ.get('DEPLOYMENT_TARGET', None)
 
 configure_targets(DEPLOYMENT_TARGET)
-

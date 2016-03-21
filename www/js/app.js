@@ -97,16 +97,16 @@ var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
     showNavigation();
     AUDIO.checkForAudio(slideAnchor);
     animateProgress(slideIndex);
-
-    if (slideIndex === 0) {
-        $share.hide();
-    } else {
-        $share.show();
-    }
-
-    if (slideIndex === $slides.length - 1) {
-        buildConclusionSlide();
-    }
+    //
+    // if (slideIndex === 0) {
+    //     $share.hide();
+    // } else {
+    //     $share.show();
+    // }
+    //
+    // if (slideIndex === $slides.length - 1) {
+    //     buildConclusionSlide();
+    // }
 
     // Completion tracking
     how_far = (slideIndex + 1) / ($slides.length - 1);
@@ -454,17 +454,17 @@ $(document).ready(function() {
     $shareModal = $('#share-modal')
     $progressIndicator = $('.progress-indicator');
     $currentProgress = $('.current-progress');
-    $support = $('.support')
-    $supportBtn = $('.support-btn');
-    $careStory = $('.care-story');
-    $question = $('.question');
-    $careStoryBtns = $('.care-story-btn');
-    $email = $('.email');
-    $emailBtn = $('.email-btn');
+    // $support = $('.support')
+    // $supportBtn = $('.support-btn');
+    // $careStory = $('.care-story');
+    // $question = $('.question');
+    // $careStoryBtns = $('.care-story-btn');
+    // $email = $('.email');
+    // $emailBtn = $('.email-btn');
 
     arrowTest = determineTest(['faded-arrow', 'bright-arrow', 'bouncy-arrow']);
     progressTest = determineTest(['progress-bar', 'no-progress-bar']);
-    conclusionTest = determineTest(['no-question', 'question_a', 'question_b', 'question_c', 'question_d']);
+    // conclusionTest = determineTest(['no-question', 'question_a', 'question_b', 'question_c', 'question_d']);
 
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);
@@ -473,9 +473,9 @@ $(document).ready(function() {
     $controlBtn.on('click', onControlBtnClick);
     $arrows.on('touchstart', fakeMobileHover);
     $arrows.on('touchend', rmFakeMobileHover);
-    $careStoryBtns.on('click', onCareStoryBtnClick);
-    $supportBtn.on('click', onSupportBtnClick);
-    $emailBtn.on('click', onEmailBtnClick);
+    // $careStoryBtns.on('click', onCareStoryBtnClick);
+    // $supportBtn.on('click', onSupportBtnClick);
+    // $emailBtn.on('click', onEmailBtnClick);
     $(document).keydown(onDocumentKeyDown);
 
     AUDIO.setUpNarrativePlayer();

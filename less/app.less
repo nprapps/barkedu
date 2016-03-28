@@ -255,7 +255,7 @@ h1,h2,h3,h4,h5,h6,p,ul,ol,li {
             background-position: center center;
         }
     }
-    
+
 }
 
 // full width container within a section or slide
@@ -441,6 +441,34 @@ img {
         }  */
     }
 
+}
+
+.home {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+    opacity: .8;
+
+    p {
+        font-size: 32px;
+        cursor: pointer;
+        color: #fff;
+        text-shadow: none;
+
+        @media @screen-small-above {
+            font-size: 32px;
+            text-shadow: 2px 2px 2px #000;
+        }
+
+        &:hover {
+           color: #fff;
+        }
+
+    }
+    .titlecard-nav & {
+        display: none;
+    }
 }
 
 .share {

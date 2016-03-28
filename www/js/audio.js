@@ -188,6 +188,13 @@ var AUDIO = (function() {
         }
     }
 
+    var stopAllAudio = function() {
+        if (narrativeVisible) {
+            _pauseNarrativePlayer();
+        }
+        $ambientPlayer.jPlayer('stop');
+    }
+
     return {
         'checkForAudio': checkForAudio,
         'toggleNarrativeAudio': toggleNarrativeAudio,
@@ -197,5 +204,6 @@ var AUDIO = (function() {
         'setAmbientMedia': setAmbientMedia,
         'fakeAmbientPlayer': fakeAmbientPlayer,
         'fakeNarrativePlayer': fakeNarrativePlayer,
+        'stopAllAudio': stopAllAudio
     }
 }());

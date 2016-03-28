@@ -25,6 +25,7 @@ var $careStory;
 var $careStoryBtns;
 var $email;
 var $emailBtn;
+var $home;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -72,7 +73,7 @@ var setUpFullPage = function() {
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
-        fixedElements: '.primary-navigation, #share-modal, .share, .progress-indicator',
+        fixedElements: '.primary-navigation, #share-modal, .home, .progress-indicator',
         resize: false,
         css3: true,
         loopHorizontal: false,
@@ -436,6 +437,11 @@ var onShareModalHidden = function(e) {
     ANALYTICS.closeShareDiscuss();
 }
 
+var onHomeButtonClick = function() {
+    $.fn.fullpage.moveTo(0, 0);
+    AUDIO.stopAllAudio();
+}
+
 
 $(document).ready(function() {
     $w = $(window).width();
@@ -461,6 +467,7 @@ $(document).ready(function() {
     // $careStoryBtns = $('.care-story-btn');
     // $email = $('.email');
     // $emailBtn = $('.email-btn');
+    $home = $('.home');
 
     arrowTest = determineTest(['faded-arrow', 'bright-arrow', 'bouncy-arrow']);
     progressTest = determineTest(['progress-bar', 'no-progress-bar']);
@@ -477,6 +484,7 @@ $(document).ready(function() {
     // $supportBtn.on('click', onSupportBtnClick);
     // $emailBtn.on('click', onEmailBtnClick);
     $(document).keydown(onDocumentKeyDown);
+    $home.on('click', onHomeButtonClick);
 
     AUDIO.setUpNarrativePlayer();
     AUDIO.setUpAmbientPlayer();

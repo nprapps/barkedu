@@ -3,6 +3,6 @@
     "version": "1.0.0",
     "dependencies": {
         "less": "~1.7.0",
-        "universal-jst": "~1.0.5"
+        "universal-jst": "nprapps/universal-jst#1.0.6"
     }
 }
